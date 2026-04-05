@@ -124,7 +124,7 @@
 	function continueAfterFeedback() {
 		showFeedback = false;
 
-		if (feedbackData?.gameOver || hearts <= 0) {
+		if (feedbackData?.gameOver) {
 			// Game over - se acabaron los intentos
 			gameStore.updateGameState('gameover');
 		} else if (feedbackData?.correct && feedbackData.nextSituationId) {
@@ -136,7 +136,8 @@
 					...state,
 					currentSituation: next
 				}));
-				// El efecto detectará el cambio y reiniciará el timer
+				// Forzar actualización local para que el $effect se dispare
+				currentSituation = next;
 			}
 		} else if (feedbackData?.correct) {
 			// Respuesta correcta - No hay más situaciones, VICTORIA
