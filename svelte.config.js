@@ -14,9 +14,9 @@ const config = {
 		}
 	},
 	kit: {
-		// Base path para GitHub Pages: /reponame/
+		// Base path vacío para GitHub Actions Pages
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/emergencias' : ''
+			base: ''
 		},
 		adapter: adapter({
 			pages: 'build',
