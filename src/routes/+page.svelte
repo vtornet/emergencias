@@ -66,7 +66,7 @@
 	<header class="pt-12 pb-8 px-4">
 		<div class="max-w-4xl mx-auto text-center text-white">
 			<div class="flex justify-center mb-6">
-				<img src="{base}/images/logo/logo.png" alt="Código Cero" class="h-80 md:h-96 object-contain" />
+				<img src="{base}/images/logo/logo.png" alt="Código Cero" class="h-[500px] md:h-[600px] w-auto object-contain" />
 			</div>
 
 			<!-- Rango actual -->
