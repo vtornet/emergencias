@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { gameStore, rank, points, badges } from '$lib/stores/game';
 	import { availableSituations } from '$lib/data/situations';
 	import { onMount } from 'svelte';
@@ -134,7 +135,7 @@
 				<div class="space-y-4">
 					{#each availableSituations as situation}
 						<a
-							href="/juego/{situation.id}"
+							href="{base}/juego/{situation.id}"
 							class="block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all hover:-translate-y-1"
 						>
 							<!-- Imagen de la situación -->
@@ -185,7 +186,7 @@
 					<span>Reiniciar</span>
 				</button>
 				<a
-					href="/ajustes"
+					href="{base}/ajustes"
 					class="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white font-bold py-4 px-6 rounded-xl transition-colors flex items-center justify-center gap-2 text-center"
 				>
 					<Settings size={20} />

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { distractionStore } from '$lib/stores/distractions';
 	import { gameStore } from '$lib/stores/game';
 	import { onDestroy } from 'svelte';
@@ -81,7 +82,7 @@
 	<!-- Header -->
 	<header class="bg-white dark:bg-gray-800 shadow-sm">
 		<div class="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
-			<a href="/" class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900">
+			<a href="{base}/" class="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900">
 				<ArrowLeft size={20} />
 			</a>
 			<h1 class="text-xl font-bold text-gray-800 dark:text-white">Ajustes</h1>

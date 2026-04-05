@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { gameStore } from '$lib/stores/game';
 	import { distractionStore } from '$lib/stores/distractions';
 	import { situationsMap } from '$lib/data/situations';
@@ -141,7 +142,7 @@
 	}
 
 	function goHome() {
-		window.location.href = '/';
+		window.location.href = base + '/';
 	}
 
 	function restart() {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { gameStore } from '$lib/stores/game';
 	import { situationsMap, availableSituations } from '$lib/data/situations';
 	import Game from '$lib/components/Game.svelte';
@@ -46,7 +47,7 @@
 			<h1 class="text-2xl font-bold text-gray-800 mb-2">Algo salió mal</h1>
 			<p class="text-gray-600 mb-6">{error}</p>
 			<a
-				href="/"
+				href="{base}/"
 				class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-colors"
 			>
 				Volver al inicio
