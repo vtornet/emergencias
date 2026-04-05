@@ -57,7 +57,7 @@
 </script>
 
 <svelte:head>
-	<title>Emergencias - Entrenamiento</title>
+	<title>Código Cero - Entrenamiento en emergencias</title>
 	<meta name="description" content="Entrenamiento gamificado en situaciones de emergencia" />
 </svelte:head>
 
@@ -70,8 +70,8 @@
 					<span class="text-6xl">🚨</span>
 				</div>
 			</div>
-			<h1 class="text-4xl md:text-5xl font-bold mb-2">Emergencias</h1>
-			<p class="text-xl text-red-100 mb-6">Entrenamiento en Primeros Auxilios</p>
+			<h1 class="text-4xl md:text-5xl font-bold mb-2">Código Cero</h1>
+			<p class="text-xl text-red-100 mb-6">Entrenamiento en emergencias</p>
 
 			<!-- Rango actual -->
 			<div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 mb-6 inline-block">
@@ -229,6 +229,8 @@
 			<footer class="mt-8 text-center text-white/70 text-sm">
 				<p>Entrenamiento en primeros auxilios - No sustituye formación oficial</p>
 				<p class="mt-1">En caso de emergencia real, llama al 112</p>
+t			<p class="mt-2 font-medium">Ideador y asesor: Fran Andrés Luis</p>
+				<p class="text-xs">Desarollado por Appstracto</p>
 			</footer>
 		</div>
 	</main>
