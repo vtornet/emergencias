@@ -1,8 +1,8 @@
-# Proyecto Emergencias - Guía para Claude
+# Proyecto Código Cero - Guía para Claude
 
 ## 📋 Resumen del Proyecto
 
-Aplicación web de entrenamiento gamificado en primeros auxilios, construida con:
+Aplicación web de entrenamiento gamificado en primeros auxilios llamada **Código Cero**, construida con:
 - **SvelteKit** con Svelte 5 (runes mode)
 - **TypeScript**
 - **TailwindCSS**
@@ -26,18 +26,24 @@ E:/Emergencias/
 │   │   │   └── distractions.ts      # Tipos de distracciones
 │   │   ├── data/
 │   │   │   ├── situations.ts       # Situaciones del juego
+│   │   │   ├── fire-situations.ts  # Situaciones de incendio
 │   │   │   └── distractions.ts      # Pool de distracciones
 │   │   ├── app.css                 # Estilos globales
 │   │   └── index.ts
 │   └── routes/
 │       ├── +layout.svelte          # Layout principal
-│       ├── +page.svelte            # Página de inicio
+│       ├── +page.svelte            # Página de inicio (dashboard)
 │       ├── ajustes/
 │       │   └── +page.svelte        # Página de ajustes
 │       └── juego/
 │           └── [id]/
 │               ├── +layout.svelte  # Layout del juego
 │               └── +page.svelte    # Página de juego dinámica
+├── static/
+│   ├── images/
+│   │   └── scenarios/              # Imágenes de las situaciones
+│   └── logo/
+│       └── logo.png               # Logo principal de la app
 ```
 
 ## ⚠️ REGLA DE ORO
@@ -88,6 +94,13 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 - Maneja todo el estado del juego
 - Persistencia en localStorage
 - NO modificar sin entender completamente el flujo
+- **Métodos clave**: `makeDecision()`, `useTip()`, `startGame()`, `updateGameState()`
+
+### Sistema de Puntuación
+- **Respuesta correcta**: +100 puntos
+- **Bonus rapidez (<10s)**: +50 puntos adicionales
+- **Uso de pista**: -10 puntos (se descuenta automáticamente)
+- **Pistas solo disponibles** cuando el jugador tiene puntos (> 0)
 
 ### stores/distractions.ts
 - Maneja las distracciones (notificaciones, llamadas, modales)
@@ -145,6 +158,12 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 9. **Imágenes no visibles** - Agregado tag `<img>` con `base` path en Game.svelte
 10. **GitHub Pages routing 404** - Configurado base path `/emergencias` y creado 404.html
 11. **Enlaces rotos en GitHub Pages** - Importado `{ base }` de `$app/paths` en todos los archivos con enlaces
+12. **`nextSituationId` vs `nextSituation`** - El store devolvía `nextSituation` pero el componente usaba `nextSituationId`
+13. **Opciones en orden fijo** - Agregada función `shuffle()` para aleatorizar opciones en cada pregunta
+14. **`hearts <= 0` siempre falso** - Eliminada la condición incorrecta, ahora solo se usa `feedbackData?.gameOver`
+15. **Mensaje falso de "+X puntos" en distracciones** - Eliminado, los puntos nunca se sumaban
+16. **Pistas no descontaban puntos** - Implementado `gameStore.useTip(cost)` que descuenta puntos realment
+17. **Forzar actualización de situación** - Después de `gameStore.update()` se asigna directamente a `currentSituation`
 
 ## 🚀 Comandos Útiles
 
@@ -174,6 +193,8 @@ npm run preview
 - TailwindCSS configurado y funcionando
 - Clases personalizadas en `app.css`
 - Animaciones definidas en componentes `<style>`
+- **Colores principales**: Gradiente `from-red-600 via-red-500 to-blue-600` (emergencias)
+- **Logo**: `/logo/logo.png` con fondo transparente (predominio azul)
 
 ## 🔐 Variables de Entorno
 
@@ -278,7 +299,8 @@ No se usan variables de entorno en este proyecto.
 ---
 
 **Última actualización:** 5 de abril de 2026
-**Versión:** 1.1
+**Versión:** 1.2
+**Nombre:** Código Cero
 **Estado:** Desplegado en GitHub Pages ✅
 **Repositorio:** https://github.com/vtornet/emergencias
 **URL Producción:** https://vtornet.github.io/emergencias/
@@ -290,8 +312,19 @@ No se usan variables de entorno en este proyecto.
 - Agregado display de imágenes en el juego
 - Mejorado visualización de corazones/intentos
 - Configurado deploy automático con GitHub Actions
+- Eliminados mensajes falsos de puntos en distracciones
+- Implementado descuento real de puntos al usar pistas
+- Pistas solo visibles si el jugador tiene puntos (> 0)
+
+### Características agregadas:
+- **Logo personalizado**: `/logo/logo.png` con fondo transparente
+- **Nueva identidad**: "Código Cero - Entrenamiento en emergencias"
+- **Colores actualizados**: Gradiente rojo/azul de emergencias
+- **Sistema de pistas**: Descuento de puntos con confirmación visual
+- **Opciones aleatorizadas**: Cambian de orden en cada partida
 
 ### Imágenes:
 - Formatos: PNG para situaciones principales, SVG para situaciones "wrong" y gameover
 - Dimensiones: 800x600px (4:3)
 - Ubicación: `static/images/scenarios/`
+- Logo: `static/logo/logo.png`
