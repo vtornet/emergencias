@@ -45,7 +45,7 @@
 		points: number;
 		timeBonus: number;
 		totalPoints: number;
-		nextSituationId?: string;
+		nextSituation?: string;
 		gameOver: boolean;
 		repeat: boolean;
 		attemptsRemaining: number;
@@ -127,9 +127,9 @@
 		if (feedbackData?.gameOver) {
 			// Game over - se acabaron los intentos
 			gameStore.updateGameState('gameover');
-		} else if (feedbackData?.correct && feedbackData.nextSituationId) {
+		} else if (feedbackData?.correct && feedbackData.nextSituation) {
 			// Respuesta correcta - hay siguiente situación en la cadena
-			const next = situationsMap.get(feedbackData.nextSituationId);
+			const next = situationsMap.get(feedbackData.nextSituation);
 			if (next) {
 				// Actualizar la situación actual en el store
 				gameStore.update((state) => ({
