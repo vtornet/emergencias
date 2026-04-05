@@ -66,7 +66,9 @@
 	<header class="pt-12 pb-8 px-4">
 		<div class="max-w-4xl mx-auto text-center text-white">
 			<div class="flex justify-center mb-6">
-				<img src="{base}/logo/logo.png" alt="Código Cero" class="h-24 md:h-32 object-contain" />
+				<div class="bg-white rounded-2xl p-4 shadow-2xl">
+					<img src="{base}/logo/logo.png" alt="Código Cero" class="h-20 md:h-28 object-contain" />
+				</div>
 			</div>
 
 			<!-- Rango actual -->
@@ -223,7 +225,7 @@
 
 			<!-- Footer -->
 			<footer class="mt-8 text-center text-white/70 text-sm">
-				<p>Entrenamiento en primeros auxilios - No sustituye formación oficial</p>
+				<p>Entrenamiento en emergencias - No sustituye formación oficial</p>
 				<p class="mt-1">En caso de emergencia real, llama al 112</p>
 				<p class="mt-2 font-medium">Ideador y asesor: Fran Andrés Luis</p>
 				<p class="text-xs">Desarollado por Appstracto</p>

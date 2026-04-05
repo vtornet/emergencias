@@ -335,7 +335,7 @@
 									{:else}
 										<p class="text-sm text-blue-700">{currentSituation.tip.text}</p>
 									{/if}
-t							<p class="text-xs text-blue-500 mt-1">-{tipCost} puntos descontados</p>
+								<p class="text-xs text-blue-500 mt-1">-{tipCost} puntos descontados</p>
 								</div>
 							</div>
 						</div>
