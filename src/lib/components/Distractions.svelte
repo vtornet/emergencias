@@ -22,9 +22,8 @@
 	});
 
 	function dismiss() {
-		if (distraction?.canDismiss) {
-			onDismiss?.();
-		}
+		// Siempre permitir cerrar manualmente
+		onDismiss?.();
 	}
 
 	function getTypeColor(type: string): string {
@@ -52,11 +51,9 @@
 						<Bell size={20} />
 						<span class="font-bold">{distraction.title}</span>
 					</div>
-					{#if distraction.canDismiss}
-						<button onclick={dismiss} class="p-1 hover:bg-white/20 rounded-full">
-							<X size={18} />
-						</button>
-					{/if}
+					<button onclick={dismiss} class="p-1 hover:bg-white/20 rounded-full">
+						<X size={18} />
+					</button>
 				</div>
 
 				<!-- Content -->
@@ -101,11 +98,9 @@
 						<Bell size={18} />
 						<span class="font-medium text-sm">{distraction.app || 'Sistema'}</span>
 					</div>
-					{#if distraction.canDismiss}
-						<button onclick={dismiss} class="p-1 hover:bg-gray-700 rounded-full">
-							<X size={16} />
-						</button>
-					{/if}
+					<button onclick={dismiss} class="p-1 hover:bg-gray-700 rounded-full">
+						<X size={16} />
+					</button>
 				</div>
 
 				<!-- Content -->
