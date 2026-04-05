@@ -14,7 +14,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'Una persona de 65 años se ha desplomado repentinamente frente a ti. No responde cuando le hablas y no se mueve. Hay gente alrededor mirando pero nadie actúa.',
 		victimStatus: 'very-critical',
-		image: '/images/scenarios/cardiac-1.svg',
+		image: '/images/scenarios/cardiac-1.png',
 		timeLimit: 45,
 		options: [
 			{
@@ -121,7 +121,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'✅ Estás haciendo RCP correctamente. Una persona joven te dice: "Yo llamo a emergencias".\n\nDe repente, escuchas que llega el DEA que fue a buscar otra persona.',
 		victimStatus: 'stable',
-		image: '/images/scenarios/cardiac-2.svg',
+		image: '/images/scenarios/cardiac-2.png',
 		timeLimit: 20,
 		options: [
 			{
@@ -213,7 +213,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'🔌 El DEA indica: "SHOCK RECOMENDADO". Se ha descargado el shock.\n\nEl DEA ahora dice: "Continuar RCP si es necesario".',
 		victimStatus: 'stable',
-		image: '/images/scenarios/cardiac-3.svg',
+		image: '/images/scenarios/cardiac-3.png',
 		timeLimit: 10,
 		options: [
 			{
@@ -299,7 +299,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'🔄 Llevas 2 minutos de RCP continua después del shock. De repente, la víctima tose y mueve la cabeza. Empieza a respirar.\n\n¿Qué haces?',
 		victimStatus: 'stable',
-		image: '/images/scenarios/cardiac-4.svg',
+		image: '/images/scenarios/cardiac-4.png',
 		timeLimit: 15,
 		options: [
 			{
@@ -371,7 +371,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'🏥 Los servicios de emergencia se han hecho cargo de la víctima. Gracias a tu actuación, la persona ha sobrevivido.\n\nEl sanitario a cargo te dice: "Has hecho todo lo correcto. Sin tu intervención rápida, esta persona no estaría viva hoy."\n\n¡Enhorabuena, socorrista!',
 		victimStatus: 'stable',
-		image: '/images/scenarios/cardiac-victory.svg',
+		image: '/images/scenarios/cardiac-victory.png',
 		timeLimit: 0,
 		options: [
 			{
@@ -432,7 +432,7 @@ export const availableSituations: AvailableSituation[] = [
 		icon: '🫀',
 		difficulty: 1,
 		firstSituation: 'cardiac-1',
-		image: '/images/scenarios/cardiac-1.svg'
+		image: '/images/scenarios/cardiac-1.png'
 	},
 	{
 		id: 'fire-emergency',
@@ -441,6 +441,6 @@ export const availableSituations: AvailableSituation[] = [
 		icon: '🔥',
 		difficulty: 2,
 		firstSituation: 'fire-1',
-		image: '/images/scenarios/fire-1.svg'
+		image: '/images/scenarios/fire-1.png'
 	}
 ];
