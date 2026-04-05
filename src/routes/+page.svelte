@@ -61,17 +61,13 @@
 	<meta name="description" content="Entrenamiento gamificado en situaciones de emergencia" />
 </svelte:head>
 
-<div class="min-h-screen bg-gradient-to-br from-red-600 via-orange-500 to-yellow-500">
+<div class="min-h-screen bg-gradient-to-br from-red-600 via-red-500 to-blue-600">
 	<!-- Hero Section -->
 	<header class="pt-12 pb-8 px-4">
 		<div class="max-w-4xl mx-auto text-center text-white">
-			<div class="flex justify-center mb-4">
-				<div class="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl">
-					<span class="text-6xl">🚨</span>
-				</div>
+			<div class="flex justify-center mb-6">
+				<img src="{base}/logo/logo.png" alt="Código Cero" class="h-24 md:h-32 object-contain" />
 			</div>
-			<h1 class="text-4xl md:text-5xl font-bold mb-2">Código Cero</h1>
-			<p class="text-xl text-red-100 mb-6">Entrenamiento en emergencias</p>
 
 			<!-- Rango actual -->
 			<div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 mb-6 inline-block">
@@ -229,7 +225,7 @@
 			<footer class="mt-8 text-center text-white/70 text-sm">
 				<p>Entrenamiento en primeros auxilios - No sustituye formación oficial</p>
 				<p class="mt-1">En caso de emergencia real, llama al 112</p>
-t			<p class="mt-2 font-medium">Ideador y asesor: Fran Andrés Luis</p>
+				<p class="mt-2 font-medium">Ideador y asesor: Fran Andrés Luis</p>
 				<p class="text-xs">Desarollado por Appstracto</p>
 			</footer>
 		</div>
