@@ -37,6 +37,7 @@
 	let timeRemaining = $state(0);
 	let timerInterval: ReturnType<typeof setInterval> | null = null;
 	let showFeedback = $state(false);
+	let tipVisible = $state(false);
 	let feedbackData = $state<{
 		correct: boolean;
 		feedback: string;
@@ -290,26 +291,28 @@
 					</div>
 				</div>
 
-				<!-- Tip (si existe) -->
-				{#if currentSituation.tip}
-					<div class="px-6 pb-4">
-						<div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
-							<span class="text-2xl">💡</span>
-							<div>
-								<p class="font-medium text-blue-800">Pista disponible</p>
-								<p class="text-sm text-blue-600">{currentSituation.tip.text}</p>
-								<button
-									onclick={() => {
-										// TODO: Implementar compra de pistas
-									}}
-									class="mt-2 text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg"
-								>
-									Ver pista (-{currentSituation.tip.cost} pts)
-								</button>
+					{#if currentSituation.tip}
+						<div class="px-6 pb-4">
+							<div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+								<span class="text-2xl">💡</span>
+								<div class="flex-1">
+									{#if !tipVisible}
+										<div class="flex items-center justify-between">
+											<p class="font-medium text-blue-800">Pista disponible</p>
+											<button
+												onclick={() => { tipVisible = true; }}
+												class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg"
+											>
+												Ver pista (-{currentSituation.tip.cost} pts)
+											</button>
+										</div>
+									{:else}
+										<p class="text-sm text-blue-700">{currentSituation.tip.text}</p>
+									{/if}
+								</div>
 							</div>
 						</div>
-					</div>
-				{/if}
+					{/if}
 			</div>
 
 			<!-- Opciones -->

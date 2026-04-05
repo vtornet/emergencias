@@ -144,6 +144,39 @@ function createGameStore() {
 		): DecisionResult => {
 			const state = get(gameStore);
 			const situation = state.currentSituation!;
+				// Timeout sin respuesta = incorrecto
+				if (!optionId) {
+					const newAttempts = state.attemptsRemaining - 1;
+					update((s) => ({ ...s, attemptsRemaining: newAttempts }));
+
+					if (newAttempts <= 0) {
+						return {
+							correct: false,
+							feedback: "Tiempo agotado. No actuaste a tiempo y la víctima no ha sobrevivido.",
+							points: 0,
+							timeBonus: 0,
+							totalPoints: 0,
+							victimStatus: "deceased",
+							gameOver: true,
+							nextSituation: undefined,
+							repeat: false,
+							attemptsRemaining: 0
+						};
+					} else {
+						return {
+							correct: false,
+							feedback: "Tiempo agotado. Pierdes un intento. ¡Actúa más rápido!",
+							points: 0,
+							timeBonus: 0,
+							totalPoints: 0,
+							victimStatus: situation.victimStatus === "stable" ? "critical" : situation.victimStatus === "critical" ? "very-critical" : "deceased",
+							gameOver: false,
+							nextSituation: undefined,
+							repeat: true,
+							attemptsRemaining: newAttempts
+						};
+					}
+				}
 			const option = situation.options.find((o: Option) => o.id === optionId)!;
 
 			const correct = option.isCorrect;
