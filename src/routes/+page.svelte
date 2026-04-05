@@ -159,7 +159,7 @@
 							<!-- Imagen de la situación -->
 							{#if situation.image}
 								<img
-									src={situation.image}
+									src={base + situation.image}
 									alt={situation.title}
 									class="w-full"
 									style="aspect-ratio: 4/3; object-fit: contain; background-color: #f3f4f6;"

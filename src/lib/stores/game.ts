@@ -222,6 +222,8 @@ function createGameStore() {
 						rank: newRank
 					};
 				});
+n				// Guardar cambios
+				saveGame({ ...s, points: s.points + totalPoints, rank: calculateRank(s.points + totalPoints) });
 
 				// Verificar insignias
 				if (timeTaken < 10) {
