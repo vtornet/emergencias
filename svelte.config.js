@@ -14,9 +14,9 @@ const config = {
 		}
 	},
 	kit: {
-		// Base path vacío para GitHub Actions Pages
+		// Base path para GitHub Pages: /emergencias/
 		paths: {
-			base: ''
+			base: '/emergencias'
 		},
 		adapter: adapter({
 			pages: 'build',
