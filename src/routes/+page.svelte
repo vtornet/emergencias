@@ -147,28 +147,20 @@
 									style="aspect-ratio: 4/3; object-fit: contain; background-color: #f3f4f6;"
 								/>
 							{/if}
-							<div class="p-6 flex items-start gap-4">
+							<div class="p-3 flex items-start gap-3">
 								<div
 									class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
 								>
 									{situation.icon}
 								</div>
 								<div class="flex-1">
-									<h3 class="font-bold text-xl text-gray-800 mb-1">{situation.title}</h3>
-									<p class="text-gray-600 mb-3">{situation.description}</p>
-									<div class="flex items-center gap-2">
-										{#each Array(situation.difficulty) as _}
-											<span class="text-yellow-500">⭐</span>
-										{/each}
-										<span class="text-sm text-gray-400 ml-2"
-											>Dificultad: {situation.difficulty}/5</span
-										>
+									<h3 class="truncate font-bold text-base text-gray-800 ">{situation.title}</h3>
+									<p class="truncate text-xs ">{situation.description}</p>
 									</div>
-								</div>
 								<div
-									class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white flex-shrink-0"
+									class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-white flex-shrink-0"
 								>
-									<Play size={24} fill="white" />
+									<Play size={18} fill="white" />
 								</div>
 							</div>
 						</a>

@@ -139,6 +139,12 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 3. **`set()` vs `update()` en stores** - Usar `update()` para mutaciones
 4. **Tipos duplicados en types/game.ts** - Eliminadas líneas 137-145
 5. **Carácter extra `t` en ajustes/+page.svelte** - Eliminado
+6. **Referencia circular en distractions.ts** - Movido `handleTimeout` dentro de `createDistractionStore()`
+7. **Tipos implícitos en game.ts** - Agregados tipos `Badge` a parámetros de `.map()`
+8. **Situaciones terminan en primera pregunta** - Arreglado flujo de `nextSituation` en `continueAfterFeedback()`
+9. **Imágenes no visibles** - Agregado tag `<img>` con `base` path en Game.svelte
+10. **GitHub Pages routing 404** - Configurado base path `/emergencias` y creado 404.html
+11. **Enlaces rotos en GitHub Pages** - Importado `{ base }` de `$app/paths` en todos los archivos con enlaces
 
 ## 🚀 Comandos Útiles
 
@@ -217,19 +223,19 @@ No se usan variables de entorno en este proyecto.
 - [x] Sistema de distracciones implementado
 - [x] Página de ajustes funcional
 
-### Fase 2: Corrección de Bugs
-- [ ] Verificar que las pruebas de distracciones en ajustes funcionan
-- [ ] Verificar que las situaciones del juego cargan correctamente
-- [ ] Verificar que el flujo completo del juego funciona (inicio → juego → victoria/derrota)
-- [ ] Verificar persistencia de datos (localStorage)
-- [ ] Verificar navegación entre páginas
+### Fase 2: Corrección de Bugs ✅
+- [x] Verificar que las pruebas de distracciones en ajustes funcionan
+- [x] Verificar que las situaciones del juego cargan correctamente
+- [x] Verificar que el flujo completo del juego funciona (inicio → juego → victoria/derrota)
+- [x] Verificar persistencia de datos (localStorage)
+- [x] Verificar navegación entre páginas
 
 ### Fase 3: Contenido
 - [x] Agregar situación de "Incendio Doméstico" 🔥
-- [ ] Revisar y mejorar textos de la situación "Parada Cardíaca"
+- [x] Revisar y mejorar textos de la situación "Parada Cardíaca"
 - [ ] Agregar más situaciones de emergencia (ahogamiento, hemorragias, etc.)
-- [ ] Verificar que todos los feedbacks de decisiones son claros
-- [ ] Agregar imágenes/íconos para cada situación
+- [x] Verificar que todos los feedbacks de decisiones son claros
+- [x] Agregar imágenes/íconos para cada situación
 
 ### Fase 4: Experiencia de Usuario
 - [ ] Mejorar animaciones y transiciones
@@ -257,12 +263,12 @@ No se usan variables de entorno en este proyecto.
 - [ ] Verificar SEO básico
 - [ ] Agregar favicon
 
-### Fase 8: Despliegue
-- [ ] Elegir plataforma de hosting (Vercel, Netlify, GitHub Pages, etc.)
+### Fase 8: Despliegue ✅
+- [x] Elegir plataforma de hosting (GitHub Pages)
 - [ ] Configurar dominio personalizado
 - [ ] Configurar HTTPS
-- [ ] Verificar que el build de producción funciona
-- [ ] **PRODUCCIÓN** 🚀
+- [x] Verificar que el build de producción funciona
+- [x] **PRODUCCIÓN** 🚀 (https://vtornet.github.io/emergencias/)
 
 ### Fase 9: Post-lanzamiento
 - [ ] Monitorear errores (si se agrega sistema de logging)
@@ -271,6 +277,21 @@ No se usan variables de entorno en este proyecto.
 
 ---
 
-**Última actualización:** Abril 2026
-**Versión:** 1.0
-**Estado:** Funcional ✅
+**Última actualización:** 5 de abril de 2026
+**Versión:** 1.1
+**Estado:** Desplegado en GitHub Pages ✅
+**Repositorio:** https://github.com/vtornet/emergencias
+**URL Producción:** https://vtornet.github.io/emergencias/
+
+## 📝 Cambios recientes (5 abril 2026)
+
+### Correcciones implementadas:
+- Fix flujo de situaciones secuenciales (cardiac-1 → cardiac-2 → ...)
+- Agregado display de imágenes en el juego
+- Mejorado visualización de corazones/intentos
+- Configurado deploy automático con GitHub Actions
+
+### Imágenes:
+- Formatos: PNG para situaciones principales, SVG para situaciones "wrong" y gameover
+- Dimensiones: 800x600px (4:3)
+- Ubicación: `static/images/scenarios/`
