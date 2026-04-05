@@ -206,18 +206,16 @@
 					<div class="flex items-center gap-4">
 						<!-- Vidas -->
 						<div class="flex items-center gap-1">
-							{#each Array(hearts) as _}
+							{#each Array(attemptsRemaining) as _}
 								<Heart size={20} class="text-red-500 fill-red-500" />
 							{/each}
-							{#each Array(3 - hearts) as _}
+							{#each Array(3 - attemptsRemaining) as _}
 								<Heart size={20} class="text-gray-300" />
 							{/each}
 						</div>
-						<!-- Intentos restantes -->
-						<div class="flex items-center gap-1 text-gray-600">
-							<AlertTriangle size={18} />
-							<span class="text-sm font-medium">{attemptsRemaining} intento{attemptsRemaining !== 1 ? 's' : ''}</span>
-						</div>
+								<span class="text-sm font-medium {attemptsRemaining === 1 ? 'text-red-600' : 'text-gray-600'}">
+									{attemptsRemaining === 0 ? 'Sin intentos' : attemptsRemaining === 1 ? '¡Último intento!' : `${attemptsRemaining} intentos`}
+								</span>
 					</div>
 					<div class="flex items-center gap-4">
 						{#if currentSituation.timeLimit > 0}
@@ -255,6 +253,16 @@
 
 				<!-- Descripción -->
 				<div class="p-6">
+					<!-- Imagen de la situación -->
+					{#if currentSituation.image}
+						<div class="mb-4 rounded-xl overflow-hidden bg-gray-50">
+							<img
+								src="{base}{currentSituation.image}"
+								alt={currentSituation.emergency.title}
+								class="w-full h-auto"
+							/>
+						</div>
+					{/if}
 					<p class="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
 						{currentSituation.description}
 					</p>
