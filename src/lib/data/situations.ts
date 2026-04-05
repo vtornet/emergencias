@@ -441,6 +441,6 @@ export const availableSituations: AvailableSituation[] = [
 		icon: '🔥',
 		difficulty: 2,
 		firstSituation: 'fire-1',
-		image: '/images/scenarios/fire-1.png'
+		image: '/images/scenarios/fire.png'
 	}
 ];

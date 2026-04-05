@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { gameStore, rank, points, badges } from '$lib/stores/game';
+	import { gameStore } from '$lib/stores/game';
 	import { availableSituations } from '$lib/data/situations';
 	import { onMount } from 'svelte';
 	import {
@@ -16,6 +16,24 @@
 
 	let showInstallPrompt = $state(false);
 	let deferredPrompt: any = null;
+
+	// Suscribirse manualmente a los stores (Svelte 5 runes no funciona bien con derived)
+	let rankData = $state({
+		rank: 'practicante',
+		name: 'Practicante',
+		level: 1,
+		pointsToNext: 500,
+		totalPoints: 0
+	});
+	let userPoints = $state(0);
+	let userBadges = $state<any[]>([]);
+
+	// Suscribirse al gameStore
+	gameStore.subscribe((state) => {
+		rankData = state.rank;
+		userPoints = state.points;
+		userBadges = state.badges.filter((b: any) => b.unlocked);
+	});
 
 	onMount(() => {
 		// Detectar si es instalable
@@ -61,11 +79,11 @@
 					<User size={24} />
 					<div class="text-left">
 						<p class="text-sm text-red-200">Tu rango</p>
-						<p class="font-bold text-lg">{$rank.name}</p>
+						<p class="font-bold text-lg">{rankData.name}</p>
 					</div>
 					<div class="ml-4 text-left">
-						<p class="text-sm text-red-200">Nivel {$rank.level}</p>
-						<p class="font-bold text-lg">{$points} pts</p>
+						<p class="text-sm text-red-200">Nivel {rankData.level}</p>
+						<p class="font-bold text-lg">{userPoints} pts</p>
 					</div>
 				</div>
 			</div>
@@ -106,14 +124,14 @@
 	<main class="px-4 pb-8">
 		<div class="max-w-4xl mx-auto">
 			<!-- Insignias -->
-			{#if $badges.length > 0}
+			{#if userBadges.length > 0}
 				<section class="mb-8">
 					<h2 class="text-white font-bold text-xl mb-4 flex items-center gap-2">
 						<Award size={24} />
 						Insignias
 					</h2>
 					<div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
-						{#each $badges as badge}
+						{#each userBadges as badge}
 							<div
 								class="bg-white/20 backdrop-blur-sm rounded-xl p-3 text-center text-white hover:bg-white/30 transition-colors"
 								title="{badge.name}: {badge.description}"
