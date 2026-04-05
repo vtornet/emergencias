@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+	<defs>
+		<linearGradient id="hopeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+			<stop offset="0%" style="stop-color:#ecfdf5"/>
+			<stop offset="100%" style="stop-color:#d1fae5"/>
+		</linearGradient>
+	</defs>
+
+	<rect width="400" height="300" fill="url(#hopeGrad)"/>
+	<rect x="0" y="0" width="400" height="200" fill="#d1fae5"/>
+	<rect x="0" y="190" width="400" height="110" fill="#a7f3d0"/>
+
+	<!-- Persona en el suelo -->
+	<ellipse cx="200" cy="250" rx="70" ry="25" fill="#d1d5db"/>
+	<ellipse cx="200" cy="245" rx="55" ry="18" fill="#3b82f6"/>
+	<circle cx="200" cy="215" r="28" fill="#fcd9b6"/>
+	<ellipse cx="200" cy="200" rx="25" ry="12" fill="#92400e"/>
+
+	<!-- Persona haciendo RCP -->
+	<g transform="translate(270, 150)">
+		<circle cx="0" cy="0" r="22" fill="#fcd9b6"/>
+		<ellipse cx="0" cy="-8" rx="18" ry="10" fill="#1f2937"/>
+		<rect x="-15" y="22" width="30" height="55" rx="5" fill="#ef4444"/>
+		<rect x="-18" y="77" width="12" height="30" rx="3" fill="#1f2937"/>
+		<rect x="6" y="77" width="12" height="30" rx="3" fill="#1f2937"/>
+		<!-- Brazos haciendo compresiones -->
+		<line x1="-8" y1="30" x2="-55" y2="55" stroke="#fcd9b6" stroke-width="10" stroke-linecap="round"/>
+		<circle cx="-55" cy="55" r="8" fill="#fcd9b6"/>
+		<!-- Líneas de movimiento -->
+		<g opacity="0.6">
+			<path d="M-70 50 Q-60 45 -50 50" stroke="#22c55e" stroke-width="2" fill="none"/>
+			<path d="M-70 55 Q-60 50 -50 55" stroke="#22c55e" stroke-width="2" fill="none"/>
+			<path d="M-70 60 Q-60 55 -50 60" stroke="#22c55e" stroke-width="2" fill="none"/>
+		</g>
+	</g>
+
+	<!-- DEA brillante -->
+	<g transform="translate(80, 160)">
+		<rect x="-25" y="-18" width="50" height="36" rx="5" fill="#fef3c7" stroke="#f59e0b" stroke-width="3">
+			<animate attributeName="stroke-opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite"/>
+		</rect>
+		<rect x="-18" y="-12" width="36" height="24" fill="#22c55e"/>
+		<text x="0" y="5" font-family="Arial Black" font-size="16" fill="white" text-anchor="middle">♥</text>
+		<!-- Rayos brillantes -->
+		<g opacity="0.8">
+			<line x1="0" y1="-25" x2="0" y2="-40" stroke="#f59e0b" stroke-width="3">
+				<animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+			</line>
+			<line x1="-28" y1="-20" x2="-40" y2="-32" stroke="#f59e0b" stroke-width="3">
+				<animate attributeName="opacity" values="0.3;1;0.3" dur="0.8s" repeatCount="indefinite"/>
+			</line>
+			<line x1="28" y1="-20" x2="40" y2="-32" stroke="#f59e0b" stroke-width="3">
+				<animate attributeName="opacity" values="0.5;1;0.5" dur="0.8s" repeatCount="indefinite"/>
+			</line>
+		</g>
+	</g>
+
+	<!-- Burbuja "¡He traído el DEA!" -->
+	<g transform="translate(150, 70)">
+		<ellipse cx="0" cy="0" rx="60" ry="35" fill="white" stroke="#6ee7b7" stroke-width="2"/>
+		<polygon points="45,30 60,40 50,32" fill="white" stroke="#6ee7b7" stroke-width="2"/>
+		<text x="0" y="-5" font-family="Arial" font-size="12" fill="#1e293b" text-anchor="middle" font-weight="bold">¡He traído</text>
+		<text x="0" y="15" font-family="Arial" font-size="12" fill="#1e293b" text-anchor="middle" font-weight="bold">el DEA!</text>
+	</g>
+
+	<!-- Indicador de progreso -->
+	<g transform="translate(350, 40)">
+		<circle cx="0" cy="0" r="25" fill="#22c55e"/>
+		<text x="0" y="8" font-family="Arial" font-size="24" fill="white" text-anchor="middle">✓</text>
+	</g>
+</svg>

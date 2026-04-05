@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+	<defs>
+		<linearGradient id="victoryGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+			<stop offset="0%" style="stop-color:#dcfce7"/>
+			<stop offset="100%" style="stop-color:#86efac"/>
+		</linearGradient>
+		<pattern id="confeti" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+			<circle cx="5" cy="5" r="3" fill="#ef4444"/>
+			<rect x="10" y="8" width="4" height="4" fill="#fbbf24" transform="rotate(45 12 10)"/>
+			<circle cx="15" cy="2" r="2" fill="#3b82f6"/>
+		</pattern>
+	</defs>
+
+	<rect width="400" height="300" fill="url(#victoryGrad)"/>
+	<rect width="400" height="300" fill="url(#confeti)" opacity="0.6"/>
+
+	<!-- Confeti animado extra -->
+	<g opacity="0.8">
+		<circle cx="30" cy="40" r="6" fill="#ef4444">
+			<animate attributeName="cy" values="40;280;40" dur="4s" repeatCount="indefinite"/>
+		</circle>
+		<rect x="100" y="20" width="8" height="8" fill="#fbbf24" transform="rotate(45 104 24)">
+			<animate attributeName="y" values="20;300;20" dur="5s" repeatCount="indefinite"/>
+		</rect>
+		<circle cx="370" cy="30" r="5" fill="#22c55e">
+			<animate attributeName="cy" values="30;270;30" dur="4.5s" repeatCount="indefinite"/>
+		</circle>
+		<rect x="340" y="10" width="6" height="6" fill="#3b82f6" transform="rotate(30 343 13)">
+			<animate attributeName="y" values="10;290;10" dur="3.5s" repeatCount="indefinite"/>
+		</rect>
+	</g>
+
+	<!-- Ambulancia -->
+	<g transform="translate(200, 160)">
+		<rect x="-55" y="-35" width="110" height="70" rx="8" fill="#ef4444"/>
+		<rect x="-40" y="-20" width="30" height="22" fill="#93c5fd"/>
+		<rect x="10" y="-20" width="30" height="22" fill="#93c5fd"/>
+		<!-- Sirenas animadas -->
+		<circle cx="40" cy="0" r="18" fill="#3b82f6">
+			<animate attributeName="opacity" values="1;0.3;1" dur="0.4s" repeatCount="indefinite"/>
+		</circle>
+		<circle cx="40" cy="0" r="12" fill="#60a5fa">
+			<animate attributeName="opacity" values="0.3;1;0.3" dur="0.4s" repeatCount="indefinite"/>
+		</circle>
+		<!-- Cruz -->
+		<rect x="-5" y="-14" width="10" height="5" fill="white"/>
+		<rect x="-2" y="-18" width="5" height="12" fill="white"/>
+		<!-- Ruedas -->
+		<circle cx="-35" cy="35" r="14" fill="#1f2937"/>
+		<circle cx="35" cy="35" r="14" fill="#1f2937"/>
+		<!-- Ventanas -->
+		<rect x="-30" y="-25" width="15" height="10" fill="#60a5fa" opacity="0.5"/>
+		<rect x="15" y="-25" width="15" height="10" fill="#60a5fa" opacity="0.5"/>
+	</g>
+
+	<!-- Sanitario celebrando -->
+	<g transform="translate(320, 100)">
+		<circle cx="0" cy="0" r="25" fill="#fcd9b6"/>
+		<ellipse cx="0" cy="-9" rx="20" ry="11" fill="#3b82f6"/>
+		<rect x="-17" y="16" width="34" height="50" rx="5" fill="#3b82f6"/>
+		<rect x="-20" y="66" width="14" height="30" rx="4" fill="#1f2937"/>
+		<rect x="6" y="66" width="14" height="30" rx="4" fill="#1f2937"/>
+		<!-- Pulgar arriba -->
+		<g transform="translate(-35, 0)">
+			<ellipse cx="0" cy="10" rx="8" ry="6" fill="#fcd9b6"/>
+			<rect x="-6" y="0" width="12" height="12" fill="#fcd9b6" rx="4"/>
+		</g>
+		<!-- Cara feliz -->
+		<path d="M-10,0 Q0,8 10,0" fill="none" stroke="#1e293b" stroke-width="3"/>
+		<circle cx="-7" cy="-5" r="2.5" fill="#1e293b"/>
+		<circle cx="7" cy="-5" r="2.5" fill="#1e293b"/>
+		<ellipse cx="0" cy="-5" rx="5" ry="3" fill="#fbbf24"/>
+	</g>
+
+	<!-- Víctima en camilla -->
+	<g transform="translate(110, 150)">
+		<rect x="-40" y="-10" width="80" height="18" rx="4" fill="#92400e"/>
+		<ellipse cx="0" cy="-20" rx="22" ry="14" fill="#fcd9b6"/>
+		<circle cx="0" cy="-35" r="18" fill="#fcd9b6"/>
+		<ellipse cx="0" cy="-45" rx="15" ry="9" fill="#92400e"/>
+		<!-- Sonrisa -->
+		<path d="M-8,-30 Q0,-25 8,-30" fill="none" stroke="#1e293b" stroke-width="2"/>
+		<circle cx="-6" cy="-38" r="2" fill="#1e293b"/>
+		<circle cx="6" cy="-38" r="2" fill="#1e293b"/>
+		<!-- Cobija -->
+		<rect x="-35" y="-8" width="70" height="10" fill="#ef4444" opacity="0.8"/>
+	</g>
+
+	<!-- Panel de victoria -->
+	<g transform="translate(200, 50)">
+		<rect x="-100" y="-30" width="200" height="60" rx="10" fill="#22c55e"/>
+		<text x="0" y="-8" font-family="Arial Black" font-size="18" fill="white" text-anchor="middle">¡MISIÓN CUMPLIDA!</text>
+		<text x="0" y="15" font-family="Arial" font-size="13" fill="white" text-anchor="middle">Has salvado una vida</text>
+	</g>
+
+	<!-- Trofeo -->
+	<g transform="translate(350, 250)">
+		<ellipse cx="0" cy="-10" rx="20" ry="8" fill="#fbbf24"/>
+		<rect x="-15" y="-35" width="30" height="25" fill="#fbbf24"/>
+		<rect x="-10" y="-45" width="20" height="12" fill="#fbbf24"/>
+		<circle cx="0" cy="-50" r="6" fill="#fbbf24"/>
+		<!-- Asas -->
+		<path d="M-15,-30 Q-22,-35 -15,-40" fill="none" stroke="#fbbf24" stroke-width="4"/>
+		<path d="M15,-30 Q22,-35 15,-40" fill="none" stroke="#fbbf24" stroke-width="4"/>
+		<!-- Base -->
+		<rect x="-12" y="-10" width="24" height="8" fill="#d97706"/>
+		<!-- Copas -->
+		<ellipse cx="0" cy="-10" rx="8" ry="4" fill="#fcd34d"/>
+	</g>
+
+	<!-- Corazón -->
+	<g transform="translate(50, 250)">
+		<path d="M0,25 C-20,10 -30,-10 -30,-25 C-30,-40 -10,-50 0,-35 C10,-50 30,-40 30,-25 C30,-10 20,10 0,25Z" fill="#ef4444"/>
+		<text x="0" y="-5" font-family="Arial Black" font-size="16" fill="white" text-anchor="middle">♥</text>
+	</g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+	<!-- Fondo rojo -->
+	<rect width="512" height="512" rx="115" fill="#ef4444"/>
+
+	<!-- Cruz de emergencias -->
+	<g fill="white">
+		<!-- Cruz central -->
+		<rect x="180" y="100" width="152" height="80" rx="10"/>
+		<rect x="100" y="180" width="312" height="80" rx="10"/>
+
+		<!-- Detalles de la cruz -->
+		<rect x="220" y="115" width="72" height="50" rx="5" fill="#fecaca"/>
+		<rect x="115" y="215" width="282" height="10" rx="5" fill="#fecaca"/>
+	</g>
+
+	<!-- Corazón pequeño -->
+	<path d="M380 120
+		c0-25-20-45-45-45
+		c-15 0-30 8-38 20
+		c-8-12-23-20-38-20
+		c-25 0-45 20-45 45
+		c0 35 45 70 83 100
+		c38-30 83-65 83-100z"
+		fill="#fbbf24" opacity="0.9"/>
+</svg>

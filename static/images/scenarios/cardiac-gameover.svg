@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+	<defs>
+		<linearGradient id="darkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+			<stop offset="0%" style="stop-color:#374151"/>
+			<stop offset="100%" style="stop-color:#1f2937"/>
+		</linearGradient>
+	</defs>
+
+	<rect width="400" height="300" fill="url(#darkGrad)"/>
+
+	<!-- Persona fallecida en el suelo -->
+	<ellipse cx="200" cy="250" rx="70" ry="22" fill="#9ca3af"/>
+	<ellipse cx="200" cy="245" rx="55" ry="16" fill="#6b7280"/>
+	<circle cx="200" cy="215" r="28" fill="#d1d5db"/>
+	<ellipse cx="200" cy="200" rx="25" ry="12" fill="#9ca3af"/>
+	<!-- Ojos cerrados -->
+	<path d="M185,165 Q192,168 199,165" fill="none" stroke="#6b7280" stroke-width="2"/>
+	<path d="M201,165 Q208,168 215,165" fill="none" stroke="#6b7280" stroke-width="2"/>
+	<!-- Boca recta -->
+	<line x1="192" y1="175" x2="208" y2="175" stroke="#6b7280" stroke-width="2"/>
+
+	<!-- Silueta de sanitario negando -->
+	<g transform="translate(100, 140)" opacity="0.7">
+		<circle cx="0" cy="0" r="22" fill="#9ca3af"/>
+		<ellipse cx="0" cy="-9" rx="18" ry="10" fill="#6b7280"/>
+		<rect x="-15" y="22" width="30" height="55" rx="5" fill="#9ca3af"/>
+		<rect x="-18" y="77" width="12" height="30" rx="3" fill="#6b7280"/>
+		<rect x="6" y="77" width="12" height="30" rx="3" fill="#6b7280"/>
+		<!-- Negando con cabeza -->
+		<path d="M-10,-15 Q0,-20 10,-15" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round">
+			<animate attributeName="d" values="M-10,-15 Q0,-20 10,-15;M-10,-12 Q0,-17 10,-12;M-10,-15 Q0,-20 10,-15" dur="1.5s" repeatCount="indefinite"/>
+		</path>
+	</g>
+
+	<!-- Símbolo de calavera -->
+	<g transform="translate(320, 60)">
+		<circle cx="0" cy="0" r="35" fill="#ef4444"/>
+		<text x="0" y="12" font-family="Arial" font-size="32" fill="white" text-anchor="middle">☠</text>
+	</g>
+
+	<!-- Panel de GAME OVER -->
+	<g transform="translate(200, 80)">
+		<rect x="-90" y="-30" width="180" height="60" rx="8" fill="#1f2937" stroke="#ef4444" stroke-width="3"/>
+		<text x="0" y="-10" font-family="Arial Black" font-size="18" fill="#ef4444" text-anchor="middle">GAME OVER</text>
+		<text x="0" y="12" font-family="Arial" font-size="11" fill="#9ca3af" text-anchor="middle">La víctima no sobrevivió</text>
+		<text x="0" y="26" font-family="Arial" font-size="9" fill="#6b7280" text-anchor="middle">Errores críticos en la cadena</text>
+	</g>
+
+	<!-- Botón de reintentar -->
+	<g transform="translate(200, 180)">
+		<rect x="-75" y="-22" width="150" height="44" rx="10" fill="#ef4444"/>
+		<text x="0" y="5" font-family="Arial Black" font-size="16" fill="white" text-anchor="middle">🔄 REINTENTAR</text>
+	</g>
+
+	<!-- Cabezas de người -->
+	<g opacity="0.3">
+		<g transform="translate(60, 120)">
+			<circle cx="0" cy="0" r="20" fill="#6b7280"/>
+			<path d="M-8,-3 Q0,3 8,-3" fill="none" stroke="#ef4444" stroke-width="2"/>
+		<path d="M-8,-3 Q0,3 8,-3" fill="none" stroke="#ef4444" stroke-width="2" transform="translate(0,8)"/>
+		<path d="M-8,-3 Q0,3 8,-3" fill="none" stroke="#ef4444" stroke-width="2" transform="translate(0,16)"/>
+	</g>
+		<g transform="translate(340, 110)">
+			<circle cx="0" cy="0" r="18" fill="#6b7280"/>
+			<path d="M-7,-3 Q0,3 7,-3" fill="none" stroke="#ef4444" stroke-width="2"/>
+			<path d="M-7,-3 Q0,3 7,-3" fill="none" stroke="#ef4444" stroke-width="2" transform="translate(0,8)"/>
+			<path d="M-7,-3 Q0,3 7,-3" fill="none" stroke="#ef4444" stroke-width="2" transform="translate(0,16)"/>
+		</g>
+	</g>
+
+	<!-- Líneas decorativas de fin -->
+	<g opacity="0.3">
+		<line x1="20" y1="260" x2="80" y2="260" stroke="#6b7280" stroke-width="2"/>
+		<line x1="320" y1="260" x2="380" y2="260" stroke="#6b7280" stroke-width="2"/>
+	</g>
+
+	<!-- Texto de aprendizaje -->
+	<g transform="translate(200, 240)">
+		<text x="0" y="0" font-family="Arial" font-size="11" fill="#9ca3af" text-anchor="middle">"Repasa el protocolo de RCP y DEA"</text>
+		<text x="0" y="15" font-family="Arial" font-size="10" fill="#6b7280" text-anchor="middle">e inténtalo de nuevo"</text>
+	</g>
+</svg>

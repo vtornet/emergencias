@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* Estilos base */
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+/* Prevenir scrollbounce en móviles */
+html,
+body {
+	overscroll-behavior: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* Touch-action manipulation para mejor respuesta táctil */
+button,
+a {
+	touch-action: manipulation;
+}
+
+/* Utilidades personalizadas */
+.text-balance {
+	text-wrap: balance;
+}
+
+/* Animaciones personalizadas */
+@keyframes slideUp {
+	from {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.animate-slide-up {
+	animation: slideUp 0.3s ease-out;
+}
+
+/* Estilos para feedback háptico visual */
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		transform: translateX(-4px);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: translateX(4px);
+	}
+}
+
+.animate-shake {
+	animation: shake 0.5s;
+}
