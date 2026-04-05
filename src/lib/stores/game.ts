@@ -210,20 +210,19 @@ function createGameStore() {
 				}
 			} else {
 				// Respuesta correcta - resetear intentos para la siguiente
-				update((s) => ({ ...s, attemptsRemaining: 3 }));
-
-				// Actualizar puntos y verificar rangos
+				// Actualizar puntos, intentos y verificar rangos en un solo update
 				update((s) => {
 					const newPoints = s.points + totalPoints;
 					const newRank = calculateRank(newPoints);
-					return {
+					const newState = {
 						...s,
 						points: newPoints,
-						rank: newRank
+						rank: newRank,
+						attemptsRemaining: 3
 					};
+					saveGame(newState);
+					return newState;
 				});
-n				// Guardar cambios
-				saveGame({ ...s, points: s.points + totalPoints, rank: calculateRank(s.points + totalPoints) });
 
 				// Verificar insignias
 				if (timeTaken < 10) {
@@ -241,7 +240,7 @@ n				// Guardar cambios
 				gameOver,
 				nextSituation: nextSituationId,
 				repeat: repeatSituation,
-				attemptsRemaining: state.attemptsRemaining - 1
+				attemptsRemaining: correct ? 3 : state.attemptsRemaining - 1
 			};
 
 			return result;

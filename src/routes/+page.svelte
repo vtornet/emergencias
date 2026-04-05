@@ -144,6 +144,27 @@
 				</section>
 			{/if}
 
+				<!-- Sistema de puntuación -->
+				<section class="mb-8 bg-white/10 backdrop-blur-sm rounded-2xl p-4">
+					<h3 class="text-white font-bold text-lg mb-3 flex items-center gap-2">
+						<Trophy size={18} />
+						Sistema de Puntuación
+					</h3>
+					<div class="grid grid-cols-3 gap-4 text-white text-sm">
+						<div class="bg-white/20 rounded-lg p-3">
+							<p class="font-bold text-orange-300">✅ Correcta</p>
+							<p class="text-xs">+100 pts</p>
+						</div>
+						<div class="bg-white/20 rounded-lg p-3">
+							<p class="font-bold text-green-300">⚡ Rápido</p>
+							<p class="text-xs">+50 pts bonus</p>
+						</div>
+						<div class="bg-white/20 rounded-lg p-3">
+							<p class="font-bold text-red-300">❌ Error</p>
+							<p class="text-xs">-1 intento</p>
+						</div>
+					</div>
+				</section>
 			<!-- Situaciones disponibles -->
 			<section class="mb-8">
 				<h2 class="text-white font-bold text-xl mb-4 flex items-center gap-2">

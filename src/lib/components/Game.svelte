@@ -38,21 +38,34 @@
 	let timerInterval: ReturnType<typeof setInterval> | null = null;
 	let showFeedback = $state(false);
 	let tipVisible = $state(false);
+	let shuffledOptions = $state<any[]>([]);
 	let feedbackData = $state<{
 		correct: boolean;
 		feedback: string;
 		points: number;
 		timeBonus: number;
 		totalPoints: number;
-		nextSituation?: string;
+		nextSituationId?: string;
 		gameOver: boolean;
 		repeat: boolean;
 		attemptsRemaining: number;
 	} | null>(null);
 
+	// Función para mezclar array (Fisher-Yates)
+	function shuffle<T>(array: T[]): T[] {
+		const arr = [...array];
+		for (let i = arr.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+		}
+		return arr;
+	}
+
 	// Iniciar timer cuando hay situación
 	$effect(() => {
 		if (currentSituation && !showFeedback) {
+			// Mezclar opciones aleatoriamente cada vez que cambia la situación
+			shuffledOptions = shuffle(currentSituation.options);
 			startTimer();
 		}
 		return () => {
@@ -114,9 +127,9 @@
 		if (feedbackData?.gameOver || hearts <= 0) {
 			// Game over - se acabaron los intentos
 			gameStore.updateGameState('gameover');
-		} else if (feedbackData?.correct && feedbackData.nextSituation) {
+		} else if (feedbackData?.correct && feedbackData.nextSituationId) {
 			// Respuesta correcta - hay siguiente situación en la cadena
-			const next = situationsMap.get(feedbackData.nextSituation);
+			const next = situationsMap.get(feedbackData.nextSituationId);
 			if (next) {
 				// Actualizar la situación actual en el store
 				gameStore.update((state) => ({
@@ -317,7 +330,7 @@
 
 			<!-- Opciones -->
 			<div class="space-y-3">
-				{#each currentSituation.options as option}
+				{#each shuffledOptions as option}
 					<button
 						onclick={() => makeDecision(option.id)}
 						class="w-full bg-white hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-400 rounded-2xl p-5 text-left transition-all hover:shadow-lg active:scale-[0.99]"
