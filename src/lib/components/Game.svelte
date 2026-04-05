@@ -38,6 +38,7 @@
 	let timerInterval: ReturnType<typeof setInterval> | null = null;
 	let showFeedback = $state(false);
 	let tipVisible = $state(false);
+	let tipCost = $state(0);
 	let shuffledOptions = $state<any[]>([]);
 	let feedbackData = $state<{
 		correct: boolean;
@@ -59,6 +60,17 @@
 			[arr[i], arr[j]] = [arr[j], arr[i]];
 		}
 		return arr;
+	}
+
+	function useTip() {
+		if (!currentSituation?.tip) return;
+
+		const cost = currentSituation.tip.cost;
+		tipCost = cost;
+		tipVisible = true;
+
+		// Descontar puntos usando el método del store
+		gameStore.useTip(cost);
 	}
 
 	// Iniciar timer cuando hay situación
@@ -305,7 +317,7 @@
 					</div>
 				</div>
 
-					{#if currentSituation.tip}
+					{#if currentSituation.tip && points > 0}
 						<div class="px-6 pb-4">
 							<div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
 								<span class="text-2xl">💡</span>
@@ -314,7 +326,7 @@
 										<div class="flex items-center justify-between">
 											<p class="font-medium text-blue-800">Pista disponible</p>
 											<button
-												onclick={() => { tipVisible = true; }}
+												onclick={useTip}
 												class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg"
 											>
 												Ver pista (-{currentSituation.tip.cost} pts)
@@ -323,6 +335,7 @@
 									{:else}
 										<p class="text-sm text-blue-700">{currentSituation.tip.text}</p>
 									{/if}
+t							<p class="text-xs text-blue-500 mt-1">-{tipCost} puntos descontados</p>
 								</div>
 							</div>
 						</div>

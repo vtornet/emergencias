@@ -295,6 +295,19 @@ function createGameStore() {
 				saveGame(newState);
 				return newState;
 			});
+		},
+		useTip: (cost: number) => {
+			update((s) => {
+				const newPoints = Math.max(0, s.points - cost);
+				const newRank = calculateRank(newPoints);
+				const newState = {
+					...s,
+					points: newPoints,
+					rank: newRank
+				};
+				saveGame(newState);
+				return newState;
+			});
 		}
 	};
 }

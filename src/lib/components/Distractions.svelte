@@ -80,9 +80,6 @@
 						<X size={18} />
 					</button>
 
-					{#if distraction.points}
-						<p class="text-center text-sm text-orange-600">+{distraction.points} puntos si aciertas ahora</p>
-					{/if}
 				</div>
 			</div>
 		</div>
@@ -119,9 +116,6 @@
 						</div>
 					{/if}
 
-					{#if distraction.points}
-						<p class="text-xs text-green-400 mt-2">+{distraction.points} pts si aciertas</p>
-					{/if}
 				</div>
 			</div>
 		</div>
@@ -156,9 +150,6 @@
 						</div>
 					{/if}
 
-					{#if distraction.points}
-						<p class="text-sm text-green-300 mt-4">+{distraction.points} puntos bonus si rechazas</p>
-					{/if}
 				</div>
 			</div>
 
