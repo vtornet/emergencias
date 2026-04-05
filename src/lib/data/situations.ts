@@ -14,7 +14,7 @@ export const cardiacArrestSituations: Situation[] = [
 		description:
 			'Una persona de 65 años se ha desplomado repentinamente frente a ti. No responde cuando le hablas y no se mueve. Hay gente alrededor mirando pero nadie actúa.',
 		victimStatus: 'very-critical',
-		image: '/images/scenarios/cardiac-arrest.png',
+		image: '/images/scenarios/cardiac-1.png',
 		timeLimit: 45,
 		options: [
 			{

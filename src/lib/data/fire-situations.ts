@@ -5,6 +5,7 @@ export const fireSituations: Situation[] = [
 		id: 'fire-1',
 		emergency: { title: 'Olor a Quemado', location: 'Casa - Sala', type: 'Incendio', icon: '👃' },
 		description: 'Estás en tu casa con el móvil. De repente, hueles a quemado. ¡Dejaste la sartén en el fuego!',
+		image: '/images/scenarios/fire-1.png',
 		victimStatus: 'stable',
 		timeLimit: 15,
 		options: [
@@ -42,6 +43,7 @@ export const fireSituations: Situation[] = [
 		id: 'fire-2',
 		emergency: { title: 'Incendio Controlado', location: 'Cocina', type: 'Incendio', icon: '🔥' },
 		description: 'Llegas con calma. La sartén arde. Hay extintor y manta.',
+		image: '/images/scenarios/fire-2.png',
 		victimStatus: 'stable',
 		timeLimit: 10,
 		options: [
@@ -66,6 +68,7 @@ export const fireSituations: Situation[] = [
 		id: 'fire-3',
 		emergency: { title: 'Fuego Apagado', location: 'Cocina', type: 'Incendio', icon: '✅' },
 		description: 'Has apagado el fuego. Hay humo. La sartén esta caliente.',
+		image: '/images/scenarios/fire-3.png',
 		victimStatus: 'stable',
 		timeLimit: 15,
 		options: [
@@ -88,6 +91,7 @@ export const fireSituations: Situation[] = [
 		id: 'fire-4',
 		emergency: { title: 'Todo Controlado', location: 'Cocina', type: 'Incendio', icon: '🏠' },
 		description: 'Has ventilado. El fuego esta apagado.',
+		image: '/images/scenarios/fire-4.png',
 		victimStatus: 'stable',
 		timeLimit: 10,
 		options: [
@@ -100,6 +104,7 @@ export const fireSituations: Situation[] = [
 		id: 'fire-victory',
 		emergency: { title: '¡Mision Cumplida!', location: 'Casa', type: 'Incendio', icon: '🎉' },
 		description: 'Has gestionado correctamente el incendio. Nunca dejes la cocina desatendida.',
+		image: '/images/scenarios/fire-victory.png',
 		victimStatus: 'stable',
 		timeLimit: 0,
 		options: [
