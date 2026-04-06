@@ -15,7 +15,8 @@
 		Zap,
 		Target,
 		Shield,
-		TrendingUp
+		TrendingUp,
+		Eye
 	} from 'lucide-svelte';
 
 	let showInstallPrompt = $state(false);
@@ -331,6 +332,46 @@
 				</div>
 			</section>
 
+			<!-- Encuentra los Errores -->
+			<section class="mb-8 animate-fade-in-up" style="animation-delay: 0.25s">
+				<div class="flex items-center gap-3 mb-4">
+					<div class="icon-box icon-box-purple">
+						<Eye size={20} class="text-purple-600" />
+					</div>
+					<h2 class="text-xl font-bold text-gray-800">Encuentra los Errores</h2>
+				</div>
+				<a
+					href="{base}/encuentra-errores"
+					class="card-elevated overflow-hidden touch-feedback block"
+				>
+					<div class="relative h-48 overflow-hidden bg-gradient-to-br from-purple-100 to-blue-50">
+						<img
+							src="{base}/images/find-errors/find-errors-01.png"
+							alt="Encuentra los errores en la playa"
+							class="w-full h-full object-cover"
+						/>
+						<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+						<div class="absolute bottom-4 left-4 right-4">
+							<span class="badge badge-purple">Novedad</span>
+						</div>
+					</div>
+					<div class="p-5">
+						<div class="flex items-start gap-4">
+							<div class="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-50 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-inner">
+								🔍
+							</div>
+							<div class="flex-1 min-w-0">
+								<h3 class="font-bold text-lg text-gray-800 group-hover:text-purple-600 transition-colors">Vigilancia Playa</h3>
+								<p class="text-sm text-gray-500">Encuentra los 5 peligros en esta playa concurrida. Tienes 45 segundos.</p>
+							</div>
+							<div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0">
+								<Play size={18} fill="white" />
+							</div>
+						</div>
+					</div>
+				</a>
+			</section>
+
 			<!-- Stats Section -->
 			<section class="mb-8 animate-fade-in-up" style="animation-delay: 0.3s">
 				<div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 text-white">
@@ -443,6 +484,10 @@
 	.badge-red {
 		background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
 		color: #991B1B;
+	}
+	.badge-purple {
+		background: linear-gradient(135deg, #E9D5FF 0%, #C4B5FD 100%);
+		color: #5B21B6;
 	}
 
 	/* Line clamp */

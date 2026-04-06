@@ -63,10 +63,12 @@ Aplicación web de entrenamiento gamificado en primeros auxilios, construida con
 - ✅ Distracciones simuladas (notificaciones, llamadas)
 - ✅ Pista con coste de puntos
 - ✅ Niveles de dificultad progresivos
+- ✅ Juego "Encuentra los Errores" - Búsqueda visual de peligros
 
 ### Situaciones implementadas
 - ✅ **Parada Cardíaca** - 4 escenarios consecutivos
 - ✅ **Incendio Doméstico** - 4 escenarios con ramificaciones
+- ✅ **Encuentra los Errores** - Vigilancia Playa (5 errores, 45s)
 - 🚧 **Atragantamiento** - Pendiente
 - 🚧 **Hemorragias** - Pendiente
 - 🚧 **Ahogamiento** - Pendiente
@@ -181,7 +183,8 @@ E:/Emergencias/
 │   │   ├── data/
 │   │   │   ├── situations.ts       # Situaciones del juego
 │   │   │   ├── fire-situations.ts  # Situaciones de incendio
-│   │   │   └── distractions.ts      # Pool de distracciones
+│   │   │   ├── find-errors.ts      # Datos del juego "Encuentra los Errores"
+│   │   │   └── distractions.ts     # Pool de distracciones
 │   │   ├── app.css                 # Estilos globales
 │   │   └── index.ts
 │   └── routes/
@@ -189,6 +192,8 @@ E:/Emergencias/
 │       ├── +page.svelte            # Página de inicio (dashboard)
 │       ├── ajustes/
 │       │   └── +page.svelte        # Página de ajustes
+│       ├── encuentra-errores/
+│       │   └── +page.svelte        # Juego "Encuentra los Errores"
 │       └── juego/
 │           └── [id]/
 │               ├── +layout.svelte  # Layout del juego
@@ -255,6 +260,16 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 - **Bonus rapidez (<10s)**: +50 puntos adicionales
 - **Uso de pista**: -10 puntos (se descuenta automáticamente)
 - **Pistas solo disponibles** cuando el jugador tiene puntos (> 0)
+
+### Juego "Encuentra los Errores"
+- **Ruta**: `/encuentra-errores`
+- **Archivo**: `routes/encuentra-errores/+page.svelte`
+- **Datos**: `lib/data/find-errors.ts`
+- **Tipos**: `FindErrorsGame`, `FindErrorsError` en `types/game.ts`
+- **Mecánica**: Usuario toca zonas en la imagen para encontrar errores
+- **Puntuación**: 50 pts por error + 100 pts bonus si termina en <30s
+- **Coordenadas**: Porcentaje desde izquierda (x) y arriba (y), radio en porcentaje
+- **Imágenes**: Original y con solución (círculos rojos)
 
 ### stores/distractions.ts
 - Maneja las distracciones (notificaciones, llamadas, modales)
@@ -394,7 +409,7 @@ No se usan variables de entorno en este proyecto.
 ---
 
 
-**Última actualización:** 6 de abril de 2026
+**Última actualización:** 6 de abril de 2026 (juego Encuentra los Errores)
 **Versión:** 2.0
 **Nombre:** Código Cero
 **Empresa:** Prevengo Tech
@@ -429,6 +444,12 @@ No se usan variables de entorno en este proyecto.
 - **Colores actualizados**: Gradiente rojo/azul de emergencias
 - **Sistema de pistas**: Descuento de puntos con confirmación visual
 - **Opciones aleatorizadas**: Cambian de orden en cada partida
+- **Juego "Encuentra los Errores"**: Nueva modalidad de búsqueda visual de peligros
+  - Escenario "Vigilancia Playa" con 5 errores identificables
+  - Sistema de coordenadas para detección de toques en imagen
+  - Timer de 45 segundos con bonus por rapidez
+  - Feedback detallado con consecuencias de cada error
+  - Pantalla de resultados con aprendizaje
 
 ### Imágenes:
 - Formatos: PNG para situaciones principales, SVG para situaciones "wrong" y gameover

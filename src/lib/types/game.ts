@@ -137,3 +137,31 @@ export interface AvailableSituation {
 	firstSituation: string;
 	image?: string;
 }
+
+// Juego de encontrar errores
+export interface FindErrorsError {
+	id: number;
+	x: number; // porcentaje desde la izquierda (0-100)
+	y: number; // porcentaje desde arriba (0-100)
+	radius: number; // porcentaje del ancho de la imagen
+	nombre: string;
+	feedback: string;
+	consecuencia: string;
+}
+
+export interface FindErrorsGame {
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	imageWithSolution: string;
+	timeLimit: number;
+	pointsPerError: number;
+	bonusUnder30s: number;
+	difficulty: 'easy' | 'intermediate' | 'hard';
+	errores: FindErrorsError[];
+	summary: {
+		titulo: string;
+		aprendizaje: string[];
+	};
+}
