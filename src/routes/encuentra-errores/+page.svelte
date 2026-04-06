@@ -198,10 +198,10 @@
 						{@const error = game.errores.find(e => e.id === errorId)}
 						{#if error}
 							<div
-								class="absolute border-3 border-green-500 rounded-full animate-scale-in flex items-center justify-center bg-green-500/20"
-								style="left: {error.x}%; top: {error.y}%; width: 5%; height: 5%; transform: translate(-50%, -50%);"
+								class="absolute border-4 border-green-500 rounded-full animate-scale-in flex items-center justify-center bg-green-500/20"
+								style="left: {error.x}%; top: {error.y}%; width: {error.radius * 2}%; height: {error.radius * 2}%; transform: translate(-50%, -50%);"
 							>
-								<CheckCircle size={18} class="text-green-600" fill="white" />
+								<CheckCircle size={24} class="text-green-600" fill="white" />
 							</div>
 						{/if}
 					{/each}
