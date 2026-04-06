@@ -2,17 +2,17 @@
 	import { base } from '$app/paths';
 	import { findErrorsGames } from '$lib/data/find-errors';
 	import { onDestroy } from 'svelte';
-	import { Clock, Eye, CheckCircle, X, Lightbulb, Play, Home, Trophy } from 'lucide-svelte';
+	import { Clock, Eye, CheckCircle, X, Lightbulb, Play, Home, Trophy, AlertCircle } from 'lucide-svelte';
 
 	// Estado del juego
 	let game = $state(findErrorsGames[0]);
 	let timeRemaining = $state(game.timeLimit);
 	let foundErrors = $state<number[]>([]);
+	let lastFoundError = $state<number | null>(null);
 	let gameOver = $state(false);
 	let showResults = $state(false);
 	let finalScore = $state(0);
 	let hasBonus = $state(false);
-	let showingSolution = $state(false);
 
 	// Timer
 	let timerInterval: ReturnType<typeof setInterval> | null = null;
@@ -56,10 +56,16 @@
 				// Verificar si ya fue encontrado
 				if (!foundErrors.includes(error.id)) {
 					foundErrors = [...foundErrors, error.id];
+					lastFoundError = error.id;
+
+					// Ocultar feedback después de 3 segundos
+					setTimeout(() => {
+						lastFoundError = null;
+					}, 3000);
 
 					// Verificar si se encontraron todos
 					if (foundErrors.length === game.errores.length) {
-						endGame(true);
+						setTimeout(() => endGame(true), 500);
 					}
 				}
 				break;
@@ -92,6 +98,7 @@
 
 	function restart() {
 		foundErrors = [];
+		lastFoundError = null;
 		gameOver = false;
 		showResults = false;
 		finalScore = 0;
@@ -104,15 +111,15 @@
 		window.location.href = base + '/';
 	}
 
-	function toggleSolution() {
-		showingSolution = !showingSolution;
-	}
-
 	// Formatear tiempo
 	function formatTime(seconds: number) {
 		const mins = Math.floor(seconds / 60);
 		const secs = seconds % 60;
 		return `${mins}:${secs.toString().padStart(2, '0')}`;
+	}
+
+	function getErrorById(id: number) {
+		return game.errores.find(e => e.id === id);
 	}
 </script>
 
@@ -155,6 +162,27 @@
 		</div>
 
 		{#if !showResults}
+			<!-- Feedback del último error encontrado -->
+			{#if lastFoundError}
+				{@const error = getErrorById(lastFoundError)}
+				{#if error}
+					<div class="bg-green-50 border-2 border-green-300 rounded-2xl p-5 mb-6 animate-slide-down">
+						<div class="flex items-start gap-3">
+							<div class="flex-shrink-0">
+								<div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+									<CheckCircle size={20} class="text-white" />
+								</div>
+							</div>
+							<div class="flex-1">
+								<h3 class="font-bold text-green-800 text-lg mb-1">¡Has encontrado un peligro!</h3>
+								<p class="font-semibold text-green-700 mb-2">{error.nombre}</p>
+								<p class="text-sm text-green-600">{error.feedback}</p>
+							</div>
+						</div>
+					</div>
+				{/if}
+			{/if}
+
 			<!-- Área de juego -->
 			<div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-6">
 				<!-- Imagen con zonas calientes -->
@@ -162,8 +190,7 @@
 					<img
 						src="{base}{game.image}"
 						alt="Playa con errores"
-						class="w-full"
-						style="aspect-ratio: 4/3; object-fit: cover;"
+						class="w-full h-auto"
 					/>
 
 					<!-- Zonas encontradas (se muestran al encontrar) -->
@@ -174,78 +201,38 @@
 								class="absolute border-4 border-green-500 rounded-full animate-scale-in flex items-center justify-center bg-green-500/20"
 								style="left: {error.x}%; top: {error.y}%; width: {error.radius * 2}%; height: {error.radius * 2}%; transform: translate(-50%, -50%);"
 							>
-							<CheckCircle size={24} class="text-green-600" fill="white" />
-						</div>
-					{/if}
-				{/each}
-
-					<!-- Solución (toggle) -->
-					{#if showingSolution}
-						<div class="absolute inset-0 pointer-events-none">
-							<img
-								src="{base}{game.imageWithSolution}"
-								alt="Solución"
-								class="w-full h-full"
-								style="aspect-ratio: 4/3; object-fit: cover;"
-							/>
-						</div>
-					{/if}
-				</div>
-
-				<!-- Botón solución -->
-				<button
-					onclick={toggleSolution}
-					class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold py-3 px-4 flex items-center justify-center gap-2 border-t"
-				>
-					<Lightbulb size={18} />
-					{showingSolution ? 'Ocultar solución' : 'Ver solución'}
-				</button>
-			</div>
-
-			<!-- Lista de errores a encontrar -->
-			<div class="bg-white rounded-2xl shadow-lg p-6">
-				<h3 class="font-bold text-gray-800 mb-4">Errores a encontrar:</h3>
-				<div class="space-y-2">
-					{#each game.errores as error, index}
-						<div
-							class="flex items-start gap-3 p-3 rounded-xl transition-all {foundErrors.includes(error.id)
-								? 'bg-green-50 border-2 border-green-200'
-								: 'bg-gray-50 border-2 border-gray-200'}"
-						>
-							<div class="flex-shrink-0">
-								<span class="flex items-center justify-center w-8 h-8 rounded-full {
-									foundErrors.includes(error.id) ? 'bg-green-500' : 'bg-gray-300'} text-white font-bold text-sm">
-									{index + 1}
-								</span>
+								<CheckCircle size={24} class="text-green-600" fill="white" />
 							</div>
-							<div class="flex-1">
-								<p class="font-semibold text-gray-800">{error.nombre}</p>
-								{#if foundErrors.includes(error.id)}
-									<div class="mt-1">
-										<p class="text-sm text-green-700 flex items-center gap-1">
-											<CheckCircle size={14} />
-											¡Encontrado!
-										</p>
-									</div>
-								{/if}
-							</div>
-						</div>
+						{/if}
 					{/each}
 				</div>
+
+				<!-- Instrucciones -->
+				<div class="bg-blue-50 px-4 py-3 border-t flex items-center gap-2">
+					<AlertCircle size={18} class="text-blue-600" />
+					<p class="text-sm text-blue-700">Toca sobre los peligros que detectes en la imagen</p>
+				</div>
+			</div>
+
+			<!-- Contador de errores encontrados -->
+			<div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+				<p class="text-gray-600 text-lg">
+					Has encontrado <span class="font-bold text-green-600">{foundErrors.length}</span> de {game.errores.length} errores
+				</p>
 			</div>
 		{:else}
 			<!-- Resultados -->
 			<div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
 				<!-- Header -->
-				<div class="{finalScore > 0 ? 'bg-green-600' : 'bg-red-600'} text-white px-6 py-4">
+				<div class="{foundErrors.length === game.errores.length ? 'bg-green-600' : 'bg-orange-600'} text-white px-6 py-4">
 					<div class="flex items-center gap-3">
-						<span class="text-4xl">{finalScore > 0 ? '🎉' : '😔'}</span>
+						<span class="text-4xl">{foundErrors.length === game.errores.length ? '🎉' : foundErrors.length > 0 ? '👍' : '😔'}</span>
 						<div>
 							<h2 class="text-xl font-bold">
-								{foundErrors.length === game.errores.length ? '¡Excelente!' : 'Tiempo agotado'}
+								{foundErrors.length === game.errores.length ? '¡Excelente!' : foundErrors.length > 0 ? '¡Bien hecho!' : 'Sigue practicando'}
 							</h2>
-							<p class="{finalScore > 0 ? 'text-green-100' : 'text-red-100'}">
-								{finalScore} puntos
+							<p class="text-white/80">
+								{finalScore} puntos • {foundErrors.length}/{game.errores.length} errores encontrados
 							</p>
 						</div>
 					</div>
@@ -366,15 +353,30 @@
 	@keyframes scaleIn {
 		from {
 			opacity: 0;
-		transform: scale(0.8);
+			transform: translate(-50%, -50%) scale(0.8);
 		}
 		to {
 			opacity: 1;
-		transform: scale(1);
+			transform: translate(-50%, -50%) scale(1);
 		}
 	}
 
 	.animate-scale-in {
 		animation: scaleIn 0.3s ease-out forwards;
+	}
+
+	@keyframes slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.animate-slide-down {
+		animation: slideDown 0.4s ease-out forwards;
 	}
 </style>
