@@ -1,7 +1,7 @@
 {
-	"name": "Emergencias - Entrenamiento",
-	"short_name": "Emergencias",
-	"description": "Entrenamiento gamificado en situaciones de emergencia",
+	"name": "Prevengo Tech - Entrenamiento",
+	"short_name": "Prevengo Tech",
+	"description": "Entrenamiento gamificado en situaciones de emergencia sanitaria",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",

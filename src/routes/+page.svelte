@@ -70,7 +70,7 @@
 </script>
 
 <svelte:head>
-	<title>Código Cero - Entrenamiento en emergencias sanitarias</title>
+	<title>Prevengo Tech - Entrenamiento en emergencias sanitarias</title>
 	<meta name="description" content="Entrenamiento gamificado en situaciones de emergencia. Aprende a salvar vidas." />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
@@ -90,7 +90,7 @@
 			<div class="flex justify-center mb-8 animate-fade-in">
 				<img
 					src="{base}/images/logo/logo.png"
-					alt="Código Cero"
+					alt="Prevengo Tech"
 					class="h-48 md:h-64 object-contain drop-shadow-2xl"
 				/>
 			</div>
@@ -385,7 +385,7 @@
 			<footer class="mt-12 pt-8 border-t border-gray-200">
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 					<div>
-						<h4 class="font-bold text-gray-800 mb-3">Código Cero</h4>
+						<h4 class="font-bold text-gray-800 mb-3">Prevengo Tech</h4>
 						<p class="text-sm text-gray-500">Plataforma de entrenamiento en emergencias sanitarias. Aprende, practica, salva vidas.</p>
 					</div>
 					<div>
@@ -399,7 +399,7 @@
 					<div>
 						<h4 class="font-bold text-gray-800 mb-3">Contacto</h4>
 						<p class="text-sm text-gray-500 mb-2">¿Necesitas ayuda?</p>
-						<a href="mailto:hola@codigocero.app" class="text-sm text-red-600 hover:text-red-700 font-medium">hola@codigocero.app</a>
+						<a href="mailto:info@prevengotech.com" class="text-sm text-red-600 hover:text-red-700 font-medium">info@prevengotech.com</a>
 					</div>
 				</div>
 
@@ -407,11 +407,11 @@
 
 				<div class="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
 					<div class="text-center md:text-left mb-4 md:mb-0">
-						<p>© 2026 Código Cero. Todos los derechos reservados.</p>
+						<p>© 2026 Prevengo Tech. Todos los derechos reservados.</p>
 						<p class="text-xs text-gray-400 mt-1">El entrenamiento no sustituye formación oficial. En emergencia real, llama al 112.</p>
 					</div>
 					<div class="text-center md:text-right">
-						<p class="font-medium text-gray-700">Ideador y asesor: Fran Andrés Luis</p>
+						<p class="font-medium text-gray-700">Ideador y asesor: Francisco Javier Andrés Luis</p>
 						<p class="text-xs text-gray-400">Desarrollado por Appstracto</p>
 					</div>
 				</div>
