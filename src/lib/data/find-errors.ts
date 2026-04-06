@@ -14,8 +14,8 @@ export const findErrorsGames: FindErrorsGame[] = [
 		errores: [
 			{
 				id: 1,
-				x: 29, // Socorrista distraído (296/1024*100)
-				y: 14, // (215/1536*100)
+				x: 32, // Socorrista - un pelín más a la derecha
+				y: 14,
 				radius: 8,
 				nombre: 'Socorrista distrádo',
 				feedback: 'El socorrista está en su torre de vigilancia pero mirando el móvil en lugar de vigilar el agua.',
@@ -23,8 +23,8 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 2,
-				x: 71, // Moto de agua (723/1024*100)
-				y: 35, // (533/1536*100)
+				x: 75, // Moto de agua - más a la derecha y abajo
+				y: 40,
 				radius: 8,
 				nombre: 'Moto de agua cerca de la orilla',
 				feedback: 'Vehículo acuático circulando muy cerca de la orilla (menos de 200m de distancia en tierra).',
@@ -32,8 +32,8 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 3,
-				x: 63, // Niña con Medusa (640/1024*100)
-				y: 42, // (641/1536*100)
+				x: 67, // Niña con Medusa - más a la derecha y abajo
+				y: 47,
 				radius: 8,
 				nombre: 'Persona tocando medusa',
 				feedback: 'Persona agarrando una medusa del agua. Las medusas pueden causar picaduras graves incluso muertas.',
@@ -41,8 +41,8 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 4,
-				x: 30, // Padres distraídos (309/1024*100)
-				y: 32, // (486/1536*100)
+				x: 30, // Niño sin supervisión (padres distraídos) - bastante más abajo
+				y: 55,
 				radius: 8,
 				nombre: 'Niño sin supervisión',
 				feedback: 'Un niño juega solo mientras sus padres leen sin supervisarle.',
@@ -50,8 +50,8 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 5,
-				x: 77, // Bañistas con bandera roja (788/1024*100)
-				y: 43, // (654/1536*100)
+				x: 82, // Bañistas con bandera roja - más a la derecha y abajo
+				y: 50,
 				radius: 8,
 				nombre: 'Baño con bandera roja',
 				feedback: 'Hay bandera roja prohibiendo el baño, pero personas están bañándose igualmente.',
