@@ -1,13 +1,167 @@
 # Proyecto Código Cero - Guía para Claude
 
+## 🏢 Información de la Empresa
+
+**Prevengo Tech** - Emergencias Sanitarias
+
+### Visión
+"Salvando vidas, formando y anticipando"
+
+### Misión
+- Formar
+- Anticipar
+- Salvar
+
+### Valores
+- Profesionalidad
+- Innovación
+- Calidad humana
+
+---
+
 ## 📋 Resumen del Proyecto
 
-Aplicación web de entrenamiento gamificado en primeros auxilios llamada **Código Cero**, construida con:
+**Código Cero** - Plataforma de entrenamiento en emergencias sanitarias.
+
+Aplicación web de entrenamiento gamificado en primeros auxilios, construida con:
 - **SvelteKit** con Svelte 5 (runes mode)
 - **TypeScript**
-- **TailwindCSS**
+- **TailwindCSS** con diseño system profesional
 - **Adapter static** (para despliegue estático)
 - **PWA** (instalable como app)
+
+### Problema que resuelve
+- Muerte súbita: 20-140 casos por 100,000 habitantes/año
+- Supervivencia RCP en España: solo 5-10%
+- Formación actual: costosa, presencial, teórica, aburrida
+
+### Solución Código Cero
+- Económica (gratuita o low-cost)
+- Accesible (cualquier lugar, momento)
+- Eficaz (práctica, realista, basada en decisiones)
+- Formativa (feedback inmediato, progresión gamificada)
+
+---
+
+## 🎯 Público Objetivo
+
+1. **Población general** - Ciudadanos que quieren aprender primeros auxilios
+2. **Empresas** - Formación obligatoria para empleados
+3. **Colectivos de riesgo** - Personal sanitario, bomberos, policías
+4. **Administraciones públicas** - Protección civil, emergencias
+
+---
+
+## 📱 Características del Producto
+
+### Funcionalidades Core
+- ✅ Escenarios interactivos de emergencia
+- ✅ Toma de decisiones con límite de tiempo
+- ✅ Sistema de puntos y rangos gamificado
+- ✅ Insignias y logros desbloqueables
+- ✅ Feedback inmediato tras cada decisión
+- ✅ Distracciones simuladas (notificaciones, llamadas)
+- ✅ Pista con coste de puntos
+- ✅ Niveles de dificultad progresivos
+
+### Situaciones implementadas
+- ✅ **Parada Cardíaca** - 4 escenarios consecutivos
+- ✅ **Incendio Doméstico** - 4 escenarios con ramificaciones
+- 🚧 **Atragantamiento** - Pendiente
+- 🚧 **Hemorragias** - Pendiente
+- 🚧 **Ahogamiento** - Pendiente
+- 🚧 **Convulsiones** - Pendiente
+
+---
+
+## 💰 Modelo de Negocio
+
+### Fuentes de ingresos
+1. **Freemium** - Contenido básico gratis, contenido premium de pago
+2. **Suscripción Premium** - €4.99/mes para empresas y profesionales
+3. **Certificados Oficiales** - €10-€50 por certificación
+4. **B2B** - Programas empresariales personalizados
+5. **Publicidad segmentada** - Servicios de emergencia
+6. **Datos agregados** (anónimos) - Estadísticas de formación
+
+### Inversión solicitada
+- **Total**: €40,000
+- **Desarrollo**: 45% (€18,000)
+- **Marketing**: 30% (€12,000)
+- **Operaciones**: 10% (€4,000)
+- **Reservas**: 10% (€4,000)
+- **Certificaciones**: 5% (€2,000)
+
+---
+
+## 🛣️ Roadmap de Desarrollo
+
+### Fase 1: MVP (Actual) ✅
+- [x] Desarrollo de plataforma (SvelteKit)
+- [x] Escenarios básicos funcionales
+- [x] Sistema de gamificación
+- [x] PWA funcional
+- [x] Despliegue en GitHub Pages
+
+### Fase 2: Beta Testing
+- [ ] Prueba con usuarios reales
+- [ ] Feedback y mejoras
+- [ ] Optimización de flujos
+
+### Fase 3: Lanzamiento
+- [ ] Publicación en stores (App Store, Google Play)
+- [ ] Campaña de marketing inicial
+- [ ] Expansión de contenido (más escenarios)
+
+### Fase 4: Funciones Sociales
+- [ ] Ranking global online
+- [ ] Multijugador cooperativo
+- [ ] Retos entre amigos
+- [ ] Comunidad y foro
+
+### Fase 5: Programa Empresas
+- [ ] Panel de administración para empresas
+- [ ] Seguimiento de progreso de empleados
+- [ ] Certificados automáticos
+- [ ] API para integración con otras plataformas
+
+### Fase 6: Certificaciones Oficiales
+- [ ] Acreditación de contenidos con autoridades
+- [ ] Certificados válados legalmente
+- [ ] Integración con sistemas de formación homologados
+
+### Fase 7: Tecnologías Avanzadas
+- [ ] Integración con wearables (Apple Watch, Fitbit)
+- [ ] Sensores para práctica de RCP (acelerómetros)
+- [ ] Realidad Aumentada para localizar AEDs
+- [ ] IA para generar escenarios personalizados
+
+### Fase 8: Expansión Internacional
+- [ ] Localización a otros idiomas
+- [ ] Adaptación cultural de escenarios
+- [ ] Partners internacionales
+
+---
+
+## 🎨 Diseño Visual (Actualizado 2026)
+
+### Design System
+- **Tipografía**: Inter (Google Fonts)
+- **Colores principales**:
+  - Primary Red: #DC2626
+  - Primary Blue: #1E40AF
+  - Accent Gold: #F59E0B
+- **Glassmorphism**: Efectos blur con transparencia
+- **Sombras**: Sistema de sombras de 5 niveles
+- **Border Radius**: 8px system (múltiplos de 4px)
+- **Animaciones**: Fade-in, Scale-in, Slide-up con stagger
+
+### Componentes UI
+- Cards elevados con hover effects
+- Botones con gradientes y micro-interacciones
+- Progress bars animadas
+- Badges con gradientes
+- Icon boxes con sombras sutiles
 
 ## 🏗️ Estructura del Proyecto
 
@@ -162,8 +316,12 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 13. **Opciones en orden fijo** - Agregada función `shuffle()` para aleatorizar opciones en cada pregunta
 14. **`hearts <= 0` siempre falso** - Eliminada la condición incorrecta, ahora solo se usa `feedbackData?.gameOver`
 15. **Mensaje falso de "+X puntos" en distracciones** - Eliminado, los puntos nunca se sumaban
-16. **Pistas no descontaban puntos** - Implementado `gameStore.useTip(cost)` que descuenta puntos realment
+16. **Pistas no descontaban puntos** - Implementado `gameStore.useTip(cost)` que descuenta puntos realmente
 17. **Forzar actualización de situación** - Después de `gameStore.update()` se asigna directamente a `currentSituation`
+18. **Favicon 404** - Agregado link a favicon.png en layout
+19. **Caracteres sueltas "t"** - Corregidos en múltiples archivos
+20. **Logo path incorrecto** - Corregido a /images/logo/logo.png
+21. **Footer texto desactualizado** - Cambiado a "Entrenamiento en emergencias"
 
 ## 🚀 Comandos Útiles
 
@@ -298,27 +456,38 @@ No se usan variables de entorno en este proyecto.
 
 ---
 
-**Última actualización:** 5 de abril de 2026
-**Versión:** 1.2
+**Última actualización:** 6 de abril de 2026
+**Versión:** 2.0
 **Nombre:** Código Cero
+**Empresa:** Prevengo Tech
 **Estado:** Desplegado en GitHub Pages ✅
 **Repositorio:** https://github.com/vtornet/emergencias
 **URL Producción:** https://vtornet.github.io/emergencias/
 
-## 📝 Cambios recientes (5 abril 2026)
+## 📝 Cambios recientes (6 abril 2026)
+
+### Rediseño visual profesional:
+- **Sistema de diseño** con variables CSS
+- **Tipografía Inter** de Google Fonts
+- **Glassmorphism** y efectos profesionales
+- **Animaciones** con stagger y micro-interacciones
+- **Hero section** rediseñado con stats cards
+- **Footer profesional** con 3 secciones
+- **Sistema de colores** refinado con palette completa
+- **Cards elevados** con hover effects
+- **Wave SVG** como divisor entre secciones
 
 ### Correcciones implementadas:
-- Fix flujo de situaciones secuenciales (cardiac-1 → cardiac-2 → ...)
-- Agregado display de imágenes en el juego
-- Mejorado visualización de corazones/intentos
-- Configurado deploy automático con GitHub Actions
-- Eliminados mensajes falsos de puntos en distracciones
-- Implementado descuento real de puntos al usar pistas
-- Pistas solo visibles si el jugador tiene puntos (> 0)
+- Fix favicon 404 - agregado link en layout
+- Eliminados caracteres "t" sueltas
+- Logo path corregido a /images/logo/logo.png
 
-### Características agregadas:
-- **Logo personalizado**: `/logo/logo.png` con fondo transparente
-- **Nueva identidad**: "Código Cero - Entrenamiento en emergencias"
+### Información del proyecto añadida:
+- Documentación completa de Prevengo Tech (visión, misión, valores)
+- Público objetivo detallado
+- Modelo de negocio documentado
+- Roadmap de desarrollo actualizado (8 fases)
+- Inversión y uso de fondos especificado
 - **Colores actualizados**: Gradiente rojo/azul de emergencias
 - **Sistema de pistas**: Descuento de puntos con confirmación visual
 - **Opciones aleatorizadas**: Cambian de orden en cada partida
