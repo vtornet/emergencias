@@ -23,7 +23,7 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 2,
-				x: 75, // Moto de agua - más a la derecha y abajo
+				x: 80, // Moto de agua - más a la derecha y abajo
 				y: 40,
 				radius: 8,
 				nombre: 'Moto de agua cerca de la orilla',
@@ -50,7 +50,7 @@ export const findErrorsGames: FindErrorsGame[] = [
 			},
 			{
 				id: 5,
-				x: 82, // Bañistas con bandera roja - más a la derecha y abajo
+				x: 87, // Bañistas con bandera roja - más a la derecha y abajo
 				y: 50,
 				radius: 8,
 				nombre: 'Baño con bandera roja',
