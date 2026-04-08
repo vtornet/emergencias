@@ -66,8 +66,8 @@ Aplicación web de entrenamiento gamificado en primeros auxilios, construida con
 - ✅ Juego "Encuentra los Errores" - Búsqueda visual de peligros
 
 ### Situaciones implementadas
-- ✅ **Parada Cardíaca** - 4 escenarios consecutivos
-- ✅ **Incendio Doméstico** - 4 escenarios con ramificaciones
+- ✅ **Parada Cardíaca** - Sistema ramificado con 15 situaciones múltiples caminos
+- ✅ **Incendio Doméstico** - Sistema ramificado con múltiples finales
 - ✅ **Encuentra los Errores** - Vigilancia Playa (5 errores, 45s)
 - 🚧 **Atragantamiento** - Pendiente
 - 🚧 **Hemorragias** - Pendiente
@@ -181,10 +181,11 @@ E:/Emergencias/
 │   │   │   ├── game.ts             # Tipos del juego
 │   │   │   └── distractions.ts      # Tipos de distracciones
 │   │   ├── data/
-│   │   │   ├── situations.ts       # Situaciones del juego
-│   │   │   ├── fire-situations.ts  # Situaciones de incendio
-│   │   │   ├── find-errors.ts      # Datos del juego "Encuentra los Errores"
-│   │   │   └── distractions.ts     # Pool de distracciones
+│   │   │   ├── situations.ts              # Exporta todas las situaciones
+│   │   │   ├── situations-branching.ts    # Situaciones ramificadas (Parada Cardíaca)
+│   │   │   ├── fire-situations.ts         # Situaciones de incendio
+│   │   │   ├── find-errors.ts             # Datos del juego "Encuentra los Errores"
+│   │   │   └── distractions.ts            # Pool de distracciones
 │   │   ├── app.css                 # Estilos globales
 │   │   └── index.ts
 │   └── routes/
@@ -254,12 +255,20 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 - Persistencia en localStorage
 - NO modificar sin entender completamente el flujo
 - **Métodos clave**: `makeDecision()`, `useTip()`, `startGame()`, `updateGameState()`
+- **makeDecision()** ahora recibe `allSituations: Map<string, Situation>` para navegación ramificada
+- **Estados nuevos**: `currentPath[]`, `totalPointsInRun`, `decisionsInRun`
 
 ### Sistema de Puntuación
 - **Respuesta correcta**: +100 puntos
 - **Bonus rapidez (<10s)**: +50 puntos adicionales
+- **Respuesta incorrecta**: 0 puntos, pero CONTINÚA al siguiente escenario (no hay repetición)
 - **Uso de pista**: -10 puntos (se descuenta automáticamente)
 - **Pistas solo disponibles** cuando el jugador tiene puntos (> 0)
+
+### Sistema de Finales
+- **Victoria Completa**: Camino perfecto sin errores graves
+- **Victoria Parcial**: Sobreviviste con errores que podrían haber sido fatales
+- **Game Over**: Decisiones incorrectas llevaron a la muerte de la víctima
 
 ### Juego "Encuentra los Errores"
 - **Ruta**: `/encuentra-errores`
@@ -270,6 +279,15 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 - **Puntuación**: 50 pts por error + 100 pts bonus si termina en <30s
 - **Coordenadas**: Porcentaje desde izquierda (x) y arriba (y), radio en porcentaje
 - **Imágenes**: Original y con solución (círculos rojos)
+
+### Sistema Ramificado "Elige tu propia historia"
+- **Archivo**: `lib/data/situations-branching.ts`
+- **Tipos de situación**: `type: 'decision' | 'final'`
+- **Tipos de final**: `finalType: 'victoria-completa' | 'victoria-parcial' | 'gameover'`
+- **Navegación**: Cada opción tiene `goTo: string` con ID de la siguiente situación
+- **Rastreo**: `currentPath` guarda el camino de decisiones tomadas
+- **Sin sistema de intentos**: Cada decisión lleva adelante, no hay repeticiones
+- **Rejugabilidad**: El usuario quiere volver para descubrir otros caminos
 
 ### stores/distractions.ts
 - Maneja las distracciones (notificaciones, llamadas, modales)
@@ -298,7 +316,7 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
 - Carga situaciones dinámicamente por URL
 - Inicializa el juego con `gameStore.startGame()`
 
-## 🎯 Flujo del Juego
+## 🎯 Flujo del Juego (Sistema Ramificado)
 
 1. Usuario entra a la página principal (`+page.svelte`)
 2. Selecciona una situación → navega a `/juego/{id}`
@@ -308,11 +326,17 @@ El componente `Distractions.svelte` está en `+layout.svelte` para funcionar glo
    - Renderiza `Game.svelte`
 4. `Game.svelte`:
    - Se suscribe a `gameStore` para obtener situación actual
-   - Muestra opciones, timer, vidas
-   - Procesa decisiones con `gameStore.makeDecision()`
-5. Al completar:
-   - Victoria → `gameStore.updateGameState('victory')`
-   - Derrota → `gameStore.updateGameState('gameover')`
+   - Muestra opciones, timer, paso actual ("Paso X")
+   - Procesa decisiones con `gameStore.makeDecision(optionId, timeTaken, situationsMap)`
+5. Cada decisión lleva a una situación diferente:
+   - Opción A → Situación X
+   - Opción B → Situación Y
+   - Opción C → Situación Z
+6. El camino se rastrea en `currentPath` (array de IDs de opciones elegidas)
+7. Al llegar a una situación con `type: 'final'`:
+   - `victoria-completa` → Pantalla de victoria perfecta
+   - `victoria-parcial` → Pantalla de victoria con errores
+   - `gameover` → Pantalla de derrota con opción de reintentar
 
 ## 🐛 Bugs ya resueltos
 
@@ -390,6 +414,60 @@ No se usan variables de entorno en este proyecto.
 - `$props()` - Props del componente
 - `{@render children?.()}` - Renderizar slots
 
+## 🔀 Sistema Ramificado - Estructura de Datos
+
+### Tipos de Situación
+```typescript
+type SituationType = 'decision' | 'final';
+type FinalType = 'victoria-completa' | 'victoria-parcial' | 'gameover';
+```
+
+### Situación de Decisión
+```typescript
+{
+  id: 'cardiac-1',
+  type: 'decision',  ← Situación intermedia con opciones
+  emergency: { title, location, type, icon },
+  description: '...',
+  timeLimit: 45,
+  options: [
+    { id: 'a', text: 'Opción A', goTo: 'cardiac-1a' },  ← Cada opción va a un sitio distinto
+    { id: 'b', text: 'Opción B', goTo: 'cardiac-1b' }
+  ]
+}
+```
+
+### Situación Final
+```typescript
+{
+  id: 'cardiac-victoria-completa',
+  type: 'final',           ← Situación final
+  finalType: 'victoria-completa',
+  description: '...',
+  options: []  ← Sin opciones (o solo botones de menú)
+}
+```
+
+### Ejemplo de Camino Ramificado
+```
+cardiac-1 (inicio)
+    ├─ A → cardiac-1a (perdió tiempo)
+    │     ├─ A → cardiac-gameover-delay
+    │     └─ B → cardiac-2 (recupera)
+    ├─ B → cardiac-1b (RCP correcto) ✅
+    │     └─ A → cardiac-2
+    └─ C → cardiac-1c (fue por DEA)
+          └─ B → cardiac-2
+
+cardiac-2 (RCP + DEA)
+    └─ A → cardiac-3 (después del shock)
+
+cardiac-3 (víctima respira)
+    ├─ A → cardiac-victoria-completa ✅
+    ├─ B → cardiac-4-partial (error)
+    └─ C → cardiac-4-partial (error)
+```
+
 ## 🚫 NO HACER
 
 1. NO cambiar stores de `writable` a runes (rompe la persistencia)
@@ -409,13 +487,34 @@ No se usan variables de entorno en este proyecto.
 ---
 
 
-**Última actualización:** 6 de abril de 2026 (juego Encuentra los Errores)
-**Versión:** 2.0
+**Última actualización:** 8 de abril de 2026 (Sistema Ramificado)
+**Versión:** 3.0
 **Nombre:** Código Cero
 **Empresa:** Prevengo Tech
 **Estado:** Desplegado en GitHub Pages ✅
 **Repositorio:** https://github.com/vtornet/emergencias
 **URL Producción:** https://vtornet.github.io/emergencias/
+
+## 📝 Cambios recientes (8 abril 2026)
+
+### Sistema Ramificado "Elige tu propia aventura":
+- **Nuevo sistema narrativo** con caminos múltiples basado en decisiones
+- **15 situaciones** para Parada Cardíaca con ramificaciones
+- **Cada opción lleva a una situación diferente** (no hay sistema de 3 intentos)
+- **Rastreo de camino**: Muestra "Paso X" en la interfaz
+- **3 tipos de finales**: Victoria Completa, Victoria Parcial, Game Over
+- **Rejugabilidad**: El usuario quiere volver a descubrir otros caminos
+- **Actualización de tipos**: `SituationType`, `FinalType`, `Option.goTo`
+- **Nuevos estados**: `currentPath`, `totalPointsInRun`, `decisionsInRun`
+- **Situaciones de fuego actualizadas** al nuevo sistema
+
+### Archivos modificados:
+- `src/lib/types/game.ts` - Nuevos tipos para sistema ramificado
+- `src/lib/stores/game.ts` - Lógica de navegación ramificada
+- `src/lib/components/Game.svelte` - UI adaptada (muestra paso actual)
+- `src/lib/data/situations-branching.ts` - NUEVO: situaciones ramificadas
+- `src/lib/data/fire-situations.ts` - Actualizado con nuevos tipos
+- `src/lib/data/situations.ts` - Simplificado
 
 ## 📝 Cambios recientes (6 abril 2026)
 
