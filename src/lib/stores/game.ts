@@ -10,7 +10,9 @@ import type {
 	SituationProgress,
 	DecisionResult,
 	VictimStatus,
-	Option
+	Option,
+	SituationType,
+	FinalType
 } from '$lib/types/game';
 
 // Rangos y sus requisitos
@@ -112,7 +114,11 @@ function createInitialState() {
 			sound: true,
 			vibration: true,
 			difficulty: 'normal' as const
-		}
+		},
+		// Sistema ramificado
+		currentPath: [] as string[],
+		totalPointsInRun: 0,
+		decisionsInRun: 0
 	};
 }
 
@@ -135,98 +141,104 @@ function createGameStore() {
 				currentState: 'playing',
 				currentSituation: situation,
 				hearts: state.maxHearts,
-				attemptsRemaining: 3
+				attemptsRemaining: 3,
+				// Resetear sistema ramificado
+				currentPath: [],
+				totalPointsInRun: 0,
+				decisionsInRun: 0
 			}));
 		},
 		makeDecision: (
 			optionId: string,
-			timeTaken: number
+			timeTaken: number,
+			allSituations: Map<string, Situation>
 		): DecisionResult => {
 			const state = get(gameStore);
 			const situation = state.currentSituation!;
-				// Timeout sin respuesta = incorrecto
-				if (!optionId) {
-					const newAttempts = state.attemptsRemaining - 1;
-					update((s) => ({ ...s, attemptsRemaining: newAttempts }));
 
-					if (newAttempts <= 0) {
-						return {
-							correct: false,
-							feedback: "Tiempo agotado. No actuaste a tiempo y la víctima no ha sobrevivido.",
-							points: 0,
-							timeBonus: 0,
-							totalPoints: 0,
-							victimStatus: "deceased",
-							gameOver: true,
-							nextSituation: undefined,
-							repeat: false,
-							attemptsRemaining: 0
-						};
-					} else {
-						return {
-							correct: false,
-							feedback: "Tiempo agotado. Pierdes un intento. ¡Actúa más rápido!",
-							points: 0,
-							timeBonus: 0,
-							totalPoints: 0,
-							victimStatus: situation.victimStatus === "stable" ? "critical" : situation.victimStatus === "critical" ? "very-critical" : "deceased",
-							gameOver: false,
-							nextSituation: undefined,
-							repeat: true,
-							attemptsRemaining: newAttempts
-						};
-					}
-				}
+			// Timeout sin respuesta = game over directo en sistema ramificado
+			if (!optionId) {
+				return {
+					correct: false,
+					feedback: "Tiempo agotado. No actuaste a tiempo y la víctima no ha sobrevivido.",
+					points: 0,
+					timeBonus: 0,
+					totalPoints: 0,
+					victimStatus: "deceased",
+					gameOver: true,
+					nextSituation: "gameover-timeout",
+					isFinal: true,
+					finalType: "gameover",
+					pathTaken: [...state.currentPath]
+				};
+			}
+
 			const option = situation.options.find((o: Option) => o.id === optionId)!;
-
 			const correct = option.isCorrect;
 			const timeBonus = timeTaken < 10 && correct ? 50 : 0;
 			const totalPoints = option.points + timeBonus;
 
-			let victimStatus: VictimStatus = situation.victimStatus;
+			// Actualizar camino tomado
+			const newPath = [...state.currentPath, option.id];
+			const newDecisionsCount = state.decisionsInRun + 1;
+			const newTotalPoints = state.totalPointsInRun + totalPoints;
+
+			// Actualizar estado global
+			update((s) => {
+				const newPoints = s.points + totalPoints;
+				const newRank = calculateRank(newPoints);
+				const newState = {
+					...s,
+					points: newPoints,
+					rank: newRank,
+					currentPath: newPath,
+					totalPointsInRun: newTotalPoints,
+					decisionsInRun: newDecisionsCount
+				};
+				saveGame(newState);
+				return newState;
+			});
+
+			// Verificar insignias
+			if (timeTaken < 10) {
+				update((s) => unlockBadge(s, 'quick-decision'));
+			}
+
+			// Obtener la siguiente situación
+			const nextSituationId = option.goTo;
+			let isFinal = false;
+			let finalType: FinalType | undefined;
 			let gameOver = false;
-			let repeatSituation = false;
-			let nextSituationId: string | undefined = option.leadsTo;
+			let victimStatus: VictimStatus = situation.victimStatus;
 
-			// Sistema de 3 intentos
-			if (!correct) {
-				const newAttempts = state.attemptsRemaining - 1;
+			// Si no hay goTo, es el fin de esta rama (solo para botones de menú en game over)
+			if (!nextSituationId) {
+				return {
+					correct,
+					feedback: option.feedback,
+					points: option.points,
+					timeBonus,
+					totalPoints,
+					victimStatus,
+					gameOver: false,
+					nextSituation: '',
+					isFinal: true,
+					finalType: 'gameover',
+					pathTaken: newPath
+				};
+			}
 
-				update((s) => ({ ...s, attemptsRemaining: newAttempts }));
+			const nextSituation = allSituations.get(nextSituationId);
 
-				if (newAttempts <= 0) {
-					// Se agotaron los 3 intentos - GAME OVER
-					gameOver = true;
-					victimStatus = 'deceased';
-					nextSituationId = undefined;
-				} else {
-					// Todavía tiene intentos - repetir la misma situación
-					repeatSituation = true;
-					nextSituationId = undefined;
-					// Empeorar estado de víctima visualmente
-					if (victimStatus === 'stable') victimStatus = 'critical';
-					else if (victimStatus === 'critical') victimStatus = 'very-critical';
-					else if (victimStatus === 'very-critical') victimStatus = 'deceased';
-				}
-			} else {
-				// Respuesta correcta - resetear intentos para la siguiente
-				// Actualizar puntos, intentos y verificar rangos en un solo update
-				update((s) => {
-					const newPoints = s.points + totalPoints;
-					const newRank = calculateRank(newPoints);
-					const newState = {
-						...s,
-						points: newPoints,
-						rank: newRank,
-						attemptsRemaining: 3
-					};
-					saveGame(newState);
-					return newState;
-				});
+			// Determinar si es un final
+			if (nextSituation?.type === 'final') {
+				isFinal = true;
+				finalType = nextSituation.finalType;
+				gameOver = finalType === 'gameover';
 
-				// Verificar insignias
-				if (timeTaken < 10) {
-					update((s) => unlockBadge(s, 'quick-decision'));
+				// Actualizar insignias según el final
+				if (finalType === 'victoria-completa') {
+					update((s) => unlockBadge(s, 'perfect'));
 				}
 			}
 
@@ -239,8 +251,9 @@ function createGameStore() {
 				victimStatus,
 				gameOver,
 				nextSituation: nextSituationId,
-				repeat: repeatSituation,
-				attemptsRemaining: correct ? 3 : state.attemptsRemaining - 1
+				isFinal,
+				finalType,
+				pathTaken: newPath
 			};
 
 			return result;

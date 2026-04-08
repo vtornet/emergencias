@@ -4,10 +4,16 @@ export type GameState = 'menu' | 'playing' | 'paused' | 'feedback' | 'results' |
 // Estados de la víctima
 export type VictimStatus = 'stable' | 'critical' | 'very-critical' | 'deceased';
 
+// Tipos de situación
+export type SituationType = 'decision' | 'final';
+
+// Tipos de final
+export type FinalType = 'victoria-completa' | 'victoria-parcial' | 'gameover';
+
 // Tipos de respuesta
 export type OptionResult = 'correct' | 'incorrect' | 'partial' | 'timeout';
 
-// Opción de respuesta
+// Opción de respuesta (sistema ramificado)
 export interface Option {
 	id: string;
 	text: string;
@@ -17,12 +23,14 @@ export interface Option {
 	points: number;
 	timeBonus?: number;
 	victimStatusChange?: VictimStatus;
-	leadsTo?: string; // ID de la siguiente situación
+	goTo?: string; // ID de la siguiente situación (opcional para casos especiales como "volver al menú")
 }
 
 // Situación de emergencia
 export interface Situation {
 	id: string;
+	type: SituationType; // 'decision' o 'final'
+	finalType?: FinalType; // Solo si type es 'final'
 	emergency: {
 		title: string;
 		location: string;
@@ -40,6 +48,8 @@ export interface Situation {
 		text: string;
 		cost: number;
 	};
+	// Para rastrear el camino tomado (opcional)
+	pathHint?: string; // Descripción del camino actual
 }
 
 // Distractores que aparecen en pantalla
@@ -111,6 +121,10 @@ export interface GameStore {
 		vibration: boolean;
 		difficulty: 'easy' | 'normal' | 'hard';
 	};
+	// Sistema ramificado: camino tomado en la situación actual
+	currentPath: string[]; // Array de IDs de opciones elegidas ['cardiac-1-b', 'cardiac-2-a', ...]
+	totalPointsInRun: number; // Puntos acumulados en la partida actual
+	decisionsInRun: number; // Número de decisiones tomadas en esta partida
 }
 
 // Resultado de una decisión
@@ -122,9 +136,10 @@ export interface DecisionResult {
 	totalPoints: number;
 	victimStatus: VictimStatus;
 	gameOver: boolean;
-	nextSituation?: string;
-	repeat?: boolean; // Si es true, repetir la misma situación
-	attemptsRemaining?: number; // Intentos restantes
+	nextSituation: string; // ID de la siguiente situación (siempre presente en sistema ramificado)
+	isFinal: boolean; // true si la siguiente situación es un final
+	finalType?: FinalType; // Tipo de final si isFinal es true
+	pathTaken: string[]; // Camino completo tomado
 }
 
 // Situación disponible en el menú principal

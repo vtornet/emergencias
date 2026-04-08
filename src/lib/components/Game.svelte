@@ -4,7 +4,7 @@
 	import { distractionStore } from '$lib/stores/distractions';
 	import { situationsMap } from '$lib/data/situations';
 	import { onDestroy } from 'svelte';
-	import { Heart, Clock, Trophy, AlertCircle, AlertTriangle } from 'lucide-svelte';
+	import { Heart, Clock, Trophy, AlertCircle, Map } from 'lucide-svelte';
 
 	// Estado reactivo - suscribirse a los stores manualmente
 	let currentSituation: any = $state(null);
@@ -12,7 +12,7 @@
 	let points = $state(0);
 	let gameState = $state('menu');
 	let distractionEnabled = $state(true);
-	let attemptsRemaining = $state(3);
+	let currentPath = $state<string[]>([]);
 
 	// Suscribirse a los stores
 	const unsubscribeGame = gameStore.subscribe((state) => {
@@ -20,7 +20,7 @@
 		hearts = state.hearts;
 		points = state.points;
 		gameState = state.currentState;
-		attemptsRemaining = state.attemptsRemaining;
+		currentPath = state.currentPath;
 	});
 
 	const unsubscribeDistraction = distractionStore.subscribe((state) => {
@@ -46,10 +46,11 @@
 		points: number;
 		timeBonus: number;
 		totalPoints: number;
-		nextSituation?: string;
+		nextSituation: string;
+		isFinal: boolean;
+		finalType?: string;
 		gameOver: boolean;
-		repeat: boolean;
-		attemptsRemaining: number;
+		pathTaken: string[];
 	} | null>(null);
 
 	// Función para mezclar array (Fisher-Yates)
@@ -75,7 +76,7 @@
 
 	// Iniciar timer cuando hay situación
 	$effect(() => {
-		if (currentSituation && !showFeedback) {
+		if (currentSituation && !showFeedback && currentSituation.type !== 'final') {
 			// Mezclar opciones aleatoriamente cada vez que cambia la situación
 			shuffledOptions = shuffle(currentSituation.options);
 			startTimer();
@@ -89,7 +90,7 @@
 	});
 
 	function startTimer() {
-		if (!currentSituation || currentSituation.timeLimit === 0) return;
+		if (!currentSituation || currentSituation.timeLimit === 0 || currentSituation.type === 'final') return;
 
 		if (timerInterval) clearInterval(timerInterval);
 
@@ -112,8 +113,8 @@
 	}
 
 	function handleTimeout() {
-		// Tiempo agotado - cuenta como incorrecto
-		const result = gameStore.makeDecision('', timeRemaining);
+		// Tiempo agotado - game over directo en sistema ramificado
+		const result = gameStore.makeDecision('', timeRemaining, situationsMap);
 		showFeedbackModal(result);
 	}
 
@@ -124,7 +125,7 @@
 		}
 
 		const timeTaken = currentSituation!.timeLimit - timeRemaining;
-		const result = gameStore.makeDecision(optionId, timeTaken);
+		const result = gameStore.makeDecision(optionId, timeTaken, situationsMap);
 		showFeedbackModal(result);
 	}
 
@@ -136,29 +137,45 @@
 	function continueAfterFeedback() {
 		showFeedback = false;
 
-		if (feedbackData?.gameOver) {
-			// Game over - se acabaron los intentos
-			gameStore.updateGameState('gameover');
-		} else if (feedbackData?.correct && feedbackData.nextSituation) {
-			// Respuesta correcta - hay siguiente situación en la cadena
-			const next = situationsMap.get(feedbackData.nextSituation);
+		if (!feedbackData) return;
+
+		const data = feedbackData; // Guardar referencia para evitar problemas de null-check
+
+		if (data.isFinal) {
+			// Es una situación final - cargar la situación final para mostrar
+			const next = situationsMap.get(data.nextSituation);
 			if (next) {
 				// Actualizar la situación actual en el store
 				gameStore.update((state) => ({
 					...state,
-					currentSituation: next
+					currentSituation: next,
+					currentState: data.gameOver ? 'gameover' : 'victory'
 				}));
 				// Forzar actualización local para que el $effect se dispare
 				currentSituation = next;
+			} else if (!data.nextSituation) {
+				// Caso especial: botón sin goTo (ej: volver al menú)
+				// Reiniciar el juego
+				gameStore.reset();
+				goHome();
 			}
-		} else if (feedbackData?.correct) {
-			// Respuesta correcta - No hay más situaciones, VICTORIA
-			gameStore.updateGameState('victory');
-		} else if (feedbackData?.repeat) {
-			// Respuesta incorrecta pero tiene más intentos
-			// Volver a mostrar las mismas opciones
-			timeRemaining = currentSituation!.timeLimit;
-			startTimer();
+		} else if (data.nextSituation) {
+			// Hay siguiente situación en el camino ramificado
+			const next = situationsMap.get(data.nextSituation);
+			if (next) {
+				if (next.id === 'menu') {
+					// Opción especial para volver al menú
+					window.location.href = base + '/';
+				} else {
+					// Actualizar la situación actual en el store
+					gameStore.update((state) => ({
+						...state,
+						currentSituation: next
+					}));
+					// Forzar actualización local para que el $effect se dispare
+					currentSituation = next;
+				}
+			}
 		}
 	}
 
@@ -173,38 +190,104 @@
 	}
 
 	function restart() {
-		const situation = currentSituation;
-		if (situation) {
-			const firstId = situation.id.split('-')[0] + '-1';
-			const first = situationsMap.get(firstId);
-			if (first) {
-				gameStore.reset();
-				distractionStore.enable(); // Asegurar que las distracciones estén activadas
-				gameStore.startGame(first);
-				showFeedback = false;
-				timeRemaining = first.timeLimit;
-				startTimer();
-			}
+		// Reiniciar al inicio de la situación actual
+		const firstId = 'cardiac-1'; // Por defecto, parada cardíaca
+		const first = situationsMap.get(firstId);
+		if (first) {
+			gameStore.reset();
+			distractionStore.enable();
+			gameStore.startGame(first);
+			showFeedback = false;
+			tipVisible = false;
+			tipCost = 0;
+			timeRemaining = first.timeLimit;
+			startTimer();
+		}
+	}
+
+	// Obtener el título del final según el tipo
+	function getFinalTitle(finalType: string | undefined): string {
+		switch (finalType) {
+			case 'victoria-completa':
+				return '¡Victoria Completa!';
+			case 'victoria-parcial':
+				return 'Victoria Parcial';
+			default:
+				return 'Misión Fallida';
+		}
+	}
+
+	// Obtener el emoji del final
+	function getFinalEmoji(finalType: string | undefined): string {
+		switch (finalType) {
+			case 'victoria-completa':
+				return '🏆';
+			case 'victoria-parcial':
+				return '⚠️';
+			default:
+				return '💀';
+		}
+	}
+
+	// Obtener el color del final
+	function getFinalColor(finalType: string | undefined): string {
+		switch (finalType) {
+			case 'victoria-completa':
+				return 'bg-green-50';
+			case 'victoria-parcial':
+				return 'bg-yellow-50';
+			default:
+				return 'bg-red-50';
 		}
 	}
 </script>
 
-{#if gameState === 'gameover' || gameState === 'victory'}
-	<!-- Pantalla de resultados -->
+{#if currentSituation && currentSituation.type === 'final'}
+	<!-- Pantalla de final -->
+	<div class="min-h-screen {getFinalColor(currentSituation.finalType)} flex items-center justify-center p-4">
+		<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-lg text-center">
+			<div class="text-8xl mb-4">{getFinalEmoji(currentSituation.finalType)}</div>
+			<h1 class="text-3xl font-bold text-gray-800 mb-2">
+				{getFinalTitle(currentSituation.finalType)}
+			</h1>
+			<div class="bg-gray-100 rounded-xl p-4 mb-4">
+				<p class="text-sm text-gray-500">Camino recorrido</p>
+				<p class="text-lg font-bold text-gray-800">{currentPath.length} decisiones</p>
+			</div>
+			<div class="bg-gray-100 rounded-xl p-4 mb-6">
+				<p class="text-sm text-gray-500">Puntos ganados</p>
+				<p class="text-3xl font-bold text-gray-800">{points}</p>
+			</div>
+			<p class="text-gray-700 mb-6 whitespace-pre-line">{currentSituation.description}</p>
+
+			<!-- Opciones del final -->
+			<div class="space-y-3">
+				{#each currentSituation.options as option}
+					<button
+						onclick={() => makeDecision(option.id)}
+						class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+					>
+						<span>{option.icon}</span>
+						<span>{option.text}</span>
+					</button>
+				{/each}
+			</div>
+		</div>
+	</div>
+{:else if gameState === 'gameover' || gameState === 'victory'}
+	<!-- Pantalla de resultados (fallback por compatibilidad) -->
 	<div class="min-h-screen {gameState === 'victory' ? 'bg-green-50' : 'bg-red-50'} flex items-center justify-center p-4">
 		<div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md text-center">
 			<div class="text-8xl mb-4">{gameState === 'victory' ? '🎉' : '💔'}</div>
 			<h1 class="text-3xl font-bold text-gray-800 mb-2">
 				{gameState === 'victory' ? '¡Misión Completada!' : 'Misión Fallida'}
 			</h1>
-			<p class="text-gray-600 mb-6">
-				{gameState === 'victory'
-					? 'Has salvado una vida. ¡Excelente trabajo, socorrista!'
-					: 'A pesar de tus esfuerzos, la víctima no ha sobrevivido.'}
-			</p>
-
+			<div class="bg-gray-100 rounded-xl p-4 mb-4">
+				<p class="text-sm text-gray-500">Camino recorrido</p>
+				<p class="text-lg font-bold text-gray-800">{currentPath.length} decisiones</p>
+			</div>
 			<div class="bg-gray-100 rounded-xl p-4 mb-6">
-				<p class="text-sm text-gray-500">Puntos ganados</p>
+				<p class="text-sm text-gray-500">Puntos totales</p>
 				<p class="text-3xl font-bold text-gray-800">{points}</p>
 			</div>
 
@@ -226,23 +309,15 @@
 	</div>
 {:else if currentSituation}
 	<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 pb-20">
-		<!-- Header con vidas, intentos y puntos -->
+		<!-- Header con puntos y camino -->
 		<div class="bg-white/80 backdrop-blur-sm shadow-sm sticky top-14 z-10">
 			<div class="max-w-4xl mx-auto px-4 py-3">
 				<div class="flex items-center justify-between">
-					<div class="flex items-center gap-4">
-						<!-- Vidas -->
-						<div class="flex items-center gap-1">
-							{#each Array(attemptsRemaining) as _}
-								<Heart size={20} class="text-red-500 fill-red-500" />
-							{/each}
-							{#each Array(3 - attemptsRemaining) as _}
-								<Heart size={20} class="text-gray-300" />
-							{/each}
-						</div>
-								<span class="text-sm font-medium {attemptsRemaining === 1 ? 'text-red-600' : 'text-gray-600'}">
-									{attemptsRemaining === 0 ? 'Sin intentos' : attemptsRemaining === 1 ? '¡Último intento!' : `${attemptsRemaining} intentos`}
-								</span>
+					<div class="flex items-center gap-2">
+						<Map size={18} class="text-blue-600" />
+						<span class="text-sm font-medium text-gray-600">
+							Paso {currentPath.length + 1}
+						</span>
 					</div>
 					<div class="flex items-center gap-4">
 						{#if currentSituation.timeLimit > 0}
@@ -385,7 +460,7 @@
 						<h2 class="text-xl font-bold">
 							{feedbackData.correct ? '¡Correcto!' : 'Incorrecto'}
 						</h2>
-						{#if feedbackData.correct && feedbackData.points > 0}
+						{#if feedbackData.correct && feedbackData.totalPoints > 0}
 							<p class="text-green-100">+{feedbackData.totalPoints} puntos</p>
 						{/if}
 					</div>
@@ -393,15 +468,6 @@
 
 				<div class="p-6">
 					<p class="text-gray-700 text-lg mb-4">{feedbackData.feedback}</p>
-
-					{#if !feedbackData.correct && feedbackData.attemptsRemaining > 0}
-						<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 flex items-center gap-2">
-							<span>⚠️</span>
-							<p class="text-sm text-yellow-800">
-								Tienes {feedbackData.attemptsRemaining} intento{feedbackData.attemptsRemaining !== 1 ? 's' : ''} restante. ¡Inténtalo de nuevo!
-							</p>
-						</div>
-					{/if}
 
 					{#if feedbackData.timeBonus > 0}
 						<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 flex items-center gap-2">
@@ -412,13 +478,46 @@
 						</div>
 					{/if}
 
+					<!-- Indicador de siguiente situación -->
+					{#if feedbackData.isFinal}
+						<div class="{feedbackData.finalType === 'gameover'
+							? 'bg-red-50 border-red-200 text-red-800'
+							: feedbackData.finalType === 'victoria-parcial'
+								? 'bg-yellow-50 border-yellow-200 text-yellow-800'
+								: 'bg-green-50 border-green-200 text-green-800'} border rounded-xl p-3 mb-4 flex items-center gap-2">
+							<span>{feedbackData.finalType === 'victoria-completa'
+								? '🏆'
+								: feedbackData.finalType === 'victoria-parcial'
+									? '⚠️'
+									: '💀'}</span>
+							<p class="text-sm font-medium">
+								{feedbackData.finalType === 'victoria-completa'
+									? '¡Victoria completa! Has actuado perfectamente.'
+									: feedbackData.finalType === 'victoria-parcial'
+										? 'La víctima sobrevive, pero cometiste errores.'
+										: 'La víctima no ha sobrevivido.'}
+							</p>
+						</div>
+					{:else}
+						<div class="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4 flex items-center gap-2">
+							<span>➡️</span>
+							<p class="text-sm text-blue-800">
+								Continuando al siguiente paso...
+							</p>
+						</div>
+					{/if}
+
 					<button
 						onclick={() => continueAfterFeedback()}
 						class="w-full {feedbackData.correct
 							? 'bg-green-600 hover:bg-green-700'
 							: 'bg-red-600 hover:bg-red-700'} text-white font-bold py-3 px-6 rounded-xl transition-colors"
 					>
-						{feedbackData.correct ? 'Continuar' : feedbackData.attemptsRemaining > 0 ? 'Intentar de nuevo' : 'Ver resultados'}
+						{feedbackData.isFinal
+							? 'Ver resultados'
+							: feedbackData.correct
+								? 'Continuar'
+								: 'Ver consecuencias'}
 					</button>
 				</div>
 			</div>
