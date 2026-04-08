@@ -129,6 +129,29 @@
 		showFeedbackModal(result);
 	}
 
+	function handleFinalOption(option: any) {
+		// Para botones en situaciones finales - no sumar puntos ni decisiones
+		if (option.goTo === 'menu' || !option.goTo) {
+			// Volver al inicio
+			gameStore.reset();
+			goHome();
+		} else if (option.goTo) {
+			// Ir a la situación especificada (ej: 'cardiac-1' para reiniciar)
+			const next = situationsMap.get(option.goTo);
+			if (next) {
+				// Resetear completamente el juego
+				gameStore.reset();
+				distractionStore.enable();
+				gameStore.startGame(next);
+				showFeedback = false;
+				tipVisible = false;
+				tipCost = 0;
+				timeRemaining = next.timeLimit;
+				startTimer();
+			}
+		}
+	}
+
 	function showFeedbackModal(result: any) {
 		feedbackData = result;
 		showFeedback = true;
@@ -264,7 +287,7 @@
 			<div class="space-y-3">
 				{#each currentSituation.options as option}
 					<button
-						onclick={() => makeDecision(option.id)}
+						onclick={() => handleFinalOption(option)}
 						class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
 					>
 						<span>{option.icon}</span>

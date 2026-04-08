@@ -586,7 +586,25 @@ export const cardiacArrestSituations: Situation[] = [
 		victimStatus: 'stable',
 		image: '/images/scenarios/cardiac-victory.png',
 		timeLimit: 0,
-		options: []
+		options: [
+			{
+				id: 'go-retry',
+				text: 'Jugar de nuevo',
+				icon: '🔄',
+				isCorrect: true,
+				feedback: '',
+				points: 0,
+				goTo: 'cardiac-1'
+			},
+			{
+				id: 'go-menu',
+				text: 'Volver al inicio',
+				icon: '🏠',
+				isCorrect: true,
+				feedback: '',
+				points: 0
+			}
+		]
 	},
 
 	// Victoria Parcial
@@ -605,7 +623,25 @@ export const cardiacArrestSituations: Situation[] = [
 		victimStatus: 'stable',
 		image: '/images/scenarios/cardiac-4-wrong.svg',
 		timeLimit: 0,
-		options: []
+		options: [
+			{
+				id: 'go-retry',
+				text: 'Intentar de nuevo',
+				icon: '🔄',
+				isCorrect: true,
+				feedback: '',
+				points: 0,
+				goTo: 'cardiac-1'
+			},
+			{
+				id: 'go-menu',
+				text: 'Volver al inicio',
+				icon: '🏠',
+				isCorrect: true,
+				feedback: '',
+				points: 0
+			}
+		]
 	},
 
 	// Game Over - Posición lateral incorrecta

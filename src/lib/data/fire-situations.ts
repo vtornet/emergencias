@@ -117,7 +117,10 @@ export const fireSituations: Situation[] = [
 		image: '/images/scenarios/fire-victory.png',
 		victimStatus: 'stable',
 		timeLimit: 0,
-		options: []
+		options: [
+			{ id: 'fire-retry', text: 'Jugar de nuevo', icon: '🔄', isCorrect: true, feedback: '', points: 0, goTo: 'fire-1' },
+			{ id: 'fire-menu', text: 'Volver al inicio', icon: '🏠', isCorrect: true, feedback: '', points: 0 }
+		]
 	},
 	{
 		id: 'fire-survived-injured',
@@ -127,7 +130,10 @@ export const fireSituations: Situation[] = [
 		description: 'Has sobrevivido con lesiones menores.',
 		victimStatus: 'stable',
 		timeLimit: 0,
-		options: []
+		options: [
+			{ id: 'fire-retry', text: 'Intentar de nuevo', icon: '🔄', isCorrect: true, feedback: '', points: 0, goTo: 'fire-1' },
+			{ id: 'fire-menu', text: 'Volver al inicio', icon: '🏠', isCorrect: true, feedback: '', points: 0 }
+		]
 	},
 	{
 		id: 'fire-survived-damaged',
@@ -137,7 +143,10 @@ export const fireSituations: Situation[] = [
 		description: 'La casa tiene danos importantes. Actua mas rapido la proxima vez.',
 		victimStatus: 'stable',
 		timeLimit: 0,
-		options: []
+		options: [
+			{ id: 'fire-retry', text: 'Intentar de nuevo', icon: '🔄', isCorrect: true, feedback: '', points: 0, goTo: 'fire-1' },
+			{ id: 'fire-menu', text: 'Volver al inicio', icon: '🏠', isCorrect: true, feedback: '', points: 0 }
+		]
 	},
 	{
 		id: 'fire-2-safe',
